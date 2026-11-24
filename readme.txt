@@ -16,11 +16,13 @@ Write a product tab once, show it on every matching product, and never lose it. 
 
 BulkTab is for WooCommerce stores with more than a handful of products. Instead of pasting the same text into hundreds of product pages, you write each tab once and choose where it appears. When something changes, you edit it once and every product updates.
 
+Stores use it for size charts, shipping and returns, specifications, care instructions, warranty details, product FAQs, downloads and manuals.
+
 We built BulkTab after reading 530 reviews of product-tab plugins and 750 support threads. The same four problems kept coming back: tabs that disappear, the same text typed into every product, tabs that break with a theme or importer, and no control over the product page. BulkTab is designed around fixing those four.
 
 = Stop copying the same tab into every product =
 
-* Create a **shared tab** once, such as Shipping, Returns or a Size guide, and show it on all products or on every product in chosen categories, tags or brands. Sub-categories are included.
+* Create a **shared tab** (a global tab) once, such as Shipping, Returns or a Size guide, and show it on all products or on every product in chosen categories, tags or brands. Sub-categories are included.
 * New products in that category get the tab automatically. No extra step.
 * Edit the shared tab once and every product shows the new version on the next page load.
 * Attach a shared tab to a single product, or hide it on one product, without touching the rule.
@@ -47,7 +49,7 @@ We built BulkTab after reading 530 reviews of product-tab plugins and 750 suppor
 
 = Your product page, your way =
 
-* Reorder, rename or hide any tab, including WooCommerce's Description, Additional information and Reviews, for the whole store or for a single product.
+* Reorder, rename or hide any tab, including WooCommerce's Description, Additional information and Reviews tabs, for the whole store or for a single product. Rename "Description" to "Details", or hide the Reviews tab where you don't need it.
 * Empty tabs are hidden automatically.
 * Works with classic and block themes. For page builders and custom layouts, the `[bulktab_tabs]` shortcode places the tabs anywhere.
 * Translatable with WPML and Polylang.
