@@ -128,3 +128,33 @@
 	margin-left: 8px;
 	color: #646970;
 }
+
+/*
+ * The panel carries WooCommerce's .woocommerce_options_panel class (for the
+ * float/width of product-data panels). Undo that class's form-field layout
+ * (labels pulled 150px left, half-width floated inputs) inside our panel.
+ */
+#woocommerce-product-data .bulktab-panel label,
+#woocommerce-product-data .bulktab-panel legend {
+	float: none;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+#woocommerce-product-data .bulktab-panel input[type="text"],
+#woocommerce-product-data .bulktab-panel textarea,
+#woocommerce-product-data .bulktab-panel select {
+	float: none;
+	width: 100%;
+	max-width: 100%;
+}
+#woocommerce-product-data .bulktab-panel input[type="checkbox"] {
+	float: none;
+	margin: 0 6px 0 0;
+}
+#woocommerce-product-data .bulktab-panel .bulktab-tab-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 20px;
+	align-items: center;
+}
