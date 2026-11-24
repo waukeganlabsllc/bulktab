@@ -332,7 +332,14 @@ for (const f of readdirSync(join(SRC, 'pages')).filter((x) => x.endsWith('.html'
 					});
 				}
 				link.removeAttribute('aria-busy');
-				handler.open({ title: 'BulkTab Pro', licenses: 1 });
+				handler.open({
+					title: 'BulkTab Pro',
+					licenses: 1,
+					// After a purchase, when the buyer closes the checkout, show the setup steps.
+					success: function () {
+						window.location.href = '/install-pro/';
+					}
+				});
 			}).catch(function () {
 				window.location.href = link.href;
 			});
@@ -451,7 +458,7 @@ ${llmsLine(page('/pricing/'))}
 ${[page('/blog/'), ...posts.map((p) => page(p.path))].map(llmsLine).join('\n')}
 
 ## Support
-${[page('/support/'), page('/privacy/'), page('/terms/')].map(llmsLine).join('\n')}
+${[page('/support/'), page('/install-pro/'), page('/privacy/'), page('/terms/')].map(llmsLine).join('\n')}
 - [Support email](mailto:${cfg.supportEmail}): BulkTab Pro customers and general questions.
 - [WordPress.org support forum](${cfg.forumUrl}): free plugin support.
 `;

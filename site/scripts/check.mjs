@@ -50,7 +50,7 @@ if (!existsSync(DIST)) {
 
 // ------------------------------------------------------------------ inventory
 const POSTS = ['add-custom-product-tab-woocommerce', 'rename-reorder-remove-woocommerce-tabs', 'woocommerce-size-chart-tab', 'woocommerce-product-tabs-disappeared', 'bulk-edit-woocommerce-product-tabs-csv', 'import-woocommerce-product-tabs-wp-all-import'];
-const PAGES = ['/', '/features/', '/pricing/', '/blog/', ...POSTS.map((s) => `/blog/${s}/`), '/support/', '/privacy/', '/terms/'];
+const PAGES = ['/', '/features/', '/pricing/', '/blog/', ...POSTS.map((s) => `/blog/${s}/`), '/support/', '/install-pro/', '/privacy/', '/terms/'];
 const fileFor = (path) => (path === '/404.html' ? join(DIST, '404.html') : join(DIST, path, 'index.html'));
 const htmlFiles = walk(DIST).filter((f) => f.endsWith('.html'));
 const pathOf = (f) => {
