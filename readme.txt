@@ -16,7 +16,7 @@ Write a product tab once, show it on every matching product, and never lose it. 
 
 BulkTab is for WooCommerce stores with more than a handful of products. Instead of pasting the same text into hundreds of product pages, you write each tab once and choose where it appears. When something changes, you edit it once and every product updates.
 
-Stores use it for size charts, shipping and returns, specifications, care instructions, warranty details, product FAQs, downloads and manuals.
+Use it for size charts, shipping and returns, specifications, care instructions, warranty details, product FAQs, downloads and manuals.
 
 We built BulkTab after reading 530 reviews of product-tab plugins and 750 support threads. The same four problems kept coming back: tabs that disappear, the same text typed into every product, tabs that break with a theme or importer, and no control over the product page. BulkTab is designed around fixing those four.
 
