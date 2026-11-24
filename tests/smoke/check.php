@@ -67,7 +67,8 @@ check( 'R-28', 'Per-product hide of Reviews', ! preg_grep( '/^Reviews/', $ht ), 
 check( 'R-28', 'Hide on one product leaves others alone', (bool) preg_grep( '/^Reviews/', $bt ), $bt );
 check( 'R-21', 'Tabs render in the default block theme', count( $bt ) >= 4, $bt );
 
-// YIKES import.
+// YIKES import (fixture must exist; a missing fixture is a failure, not a skip).
+check( 'R-6', 'YIKES fixture ran', isset( $ids['mug'], $ids['yikes_run'] ) );
 if ( isset( $ids['mug'] ) ) {
 	$mug = tabs( page( $base, $dir, (int) $ids['mug'] ) );
 	$dry = $ids['yikes_dry'] ?? array();
@@ -82,7 +83,8 @@ if ( isset( $ids['mug'] ) ) {
 	check( 'R-8', 'With YIKES active, each tab shows once', 1 === ( $counts['Material'] ?? 0 ) && 1 === ( $counts['Returns'] ?? 0 ), $mug );
 }
 
-// CSV round trip.
+// CSV round trip (fixture must exist).
+check( 'R-2', 'CSV fixture ran', isset( $ids['shirt'], $ids['csv_result'] ) );
 if ( isset( $ids['shirt'] ) ) {
 	check( 'R-25', 'Export has readable BulkTab columns', in_array( 'BulkTab 1 content', $ids['csv_headers'] ?? array(), true ), $ids['csv_headers'] ?? null );
 	check( 'R-25', 'Exported cell is the plain content', 'Cotton' === ( $ids['csv_exported'] ?? null ), $ids['csv_exported'] ?? null );

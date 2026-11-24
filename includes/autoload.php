@@ -5,6 +5,8 @@
  * @package BulkTab
  */
 
+defined( 'ABSPATH' ) || exit;
+
 spl_autoload_register(
 	static function ( $class_name ) {
 		$prefix = 'BulkTab\\';

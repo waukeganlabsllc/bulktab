@@ -111,11 +111,11 @@ final class DataHealth {
 	public static function find_unreadable_rules(): array {
 		$ids   = get_posts(
 			array(
-				'post_type'        => PostType::NAME,
-				'post_status'      => array( 'publish', 'draft', 'pending', 'private' ),
-				'fields'           => 'ids',
-				'posts_per_page'   => -1,
-				'suppress_filters' => true,
+				'post_type'      => PostType::NAME,
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+				'fields'         => 'ids',
+				'posts_per_page' => -1,
+				'lang'           => '', // Polylang: all languages.
 			)
 		);
 		$found = array();
