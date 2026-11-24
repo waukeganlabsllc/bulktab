@@ -1,0 +1,23 @@
+{
+  "name": "bulktab-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing site for BulkTab (static, deployed to Cloudflare Workers static assets).",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "preview": "npx --yes wrangler@4 dev",
+    "deploy": "npx --yes wrangler@4 deploy"
+  },
+  "dependencies": {
+    "marked": "^18.3.0"
+  },
+  "devDependencies": {
+    "html-validate": "^11.21.1"
+  }
+}

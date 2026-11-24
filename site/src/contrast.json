@@ -1,0 +1,129 @@
+[
+  {
+    "use": "body text on white",
+    "fg": "#1B2635",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "body text on soft sections",
+    "fg": "#1B2635",
+    "bg": "#F4F6F9"
+  },
+  {
+    "use": "muted text on white",
+    "fg": "#4A5568",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "muted text on soft sections",
+    "fg": "#4A5568",
+    "bg": "#F4F6F9"
+  },
+  {
+    "use": "headings and links (navy) on white",
+    "fg": "#1E3A5F",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "headings and links (navy) on soft sections",
+    "fg": "#1E3A5F",
+    "bg": "#F4F6F9"
+  },
+  {
+    "use": "primary button: navy on amber",
+    "fg": "#1E3A5F",
+    "bg": "#F5A524"
+  },
+  {
+    "use": "primary button hover: navy on darker amber",
+    "fg": "#1E3A5F",
+    "bg": "#E8981A"
+  },
+  {
+    "use": "small amber text (eyebrows, problem lines) on white",
+    "fg": "#9A5B00",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "small amber text on soft sections",
+    "fg": "#9A5B00",
+    "bg": "#F4F6F9"
+  },
+  {
+    "use": "large amber text (hero H1 accent) on soft hero",
+    "fg": "#B86E00",
+    "bg": "#F4F6F9",
+    "large": true
+  },
+  {
+    "use": "large amber text (hero H1 accent) on white",
+    "fg": "#B86E00",
+    "bg": "#FFFFFF",
+    "large": true
+  },
+  {
+    "use": "white text on navy sections",
+    "fg": "#FFFFFF",
+    "bg": "#1E3A5F"
+  },
+  {
+    "use": "light text on navy sections",
+    "fg": "#D9E2EE",
+    "bg": "#1E3A5F"
+  },
+  {
+    "use": "footer text on dark navy",
+    "fg": "#D9E2EE",
+    "bg": "#152A45"
+  },
+  {
+    "use": "footer links on dark navy",
+    "fg": "#FFFFFF",
+    "bg": "#152A45"
+  },
+  {
+    "use": "green Yes and check marks on white",
+    "fg": "#1D6B3A",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "green Yes on soft sections",
+    "fg": "#1D6B3A",
+    "bg": "#F4F6F9"
+  },
+  {
+    "use": "code text on dark code blocks",
+    "fg": "#E8EEF7",
+    "bg": "#0F1D30"
+  },
+  {
+    "use": "focus ring (navy, non-text) on white",
+    "fg": "#1E3A5F",
+    "bg": "#FFFFFF",
+    "large": true
+  },
+  {
+    "use": "focus ring (navy, non-text) on soft sections",
+    "fg": "#1E3A5F",
+    "bg": "#F4F6F9",
+    "large": true
+  },
+  {
+    "use": "focus ring (navy, non-text) next to amber buttons",
+    "fg": "#1E3A5F",
+    "bg": "#F5A524",
+    "large": true
+  },
+  {
+    "use": "focus ring (amber, non-text) on navy sections",
+    "fg": "#F5A524",
+    "bg": "#1E3A5F",
+    "large": true
+  },
+  {
+    "use": "focus ring (amber, non-text) in the footer",
+    "fg": "#F5A524",
+    "bg": "#152A45",
+    "large": true
+  }
+]

@@ -1,0 +1,204 @@
+<!--page
+{
+  "path": "/features/",
+  "title": "BulkTab Features: Shared WooCommerce Product Tabs",
+  "h1": "Features",
+  "description": "Shared tabs by category, tag or brand, 20 tabs per product, rename or hide default tabs, CSV editing and one-click import. All free.",
+  "updated": "2026-11-24",
+  "section": "features",
+  "schema": ["SoftwareApplicationFeatures"],
+  "featureList": [
+    "Shared product tabs shown on all products or by category, tag or brand, sub-categories included",
+    "Edit a shared tab once and every product updates",
+    "Attach or hide a shared tab on a single product",
+    "Up to 20 own tabs per product: text, tables, images, video embeds, PDF links and shortcodes",
+    "Reorder, rename or hide any tab, including Description, Additional information and Reviews",
+    "Empty tabs hidden automatically",
+    "Plain-field storage that survives updates, CSV imports, search-and-replace and migrations",
+    "Previous version of each product tab kept for undo",
+    "Readable columns in the WooCommerce product CSV export and import",
+    "One-click import from another tab plugin with a dry run",
+    "Classic and block themes; shortcodes for Elementor, Divi and other builders",
+    "WPML and Polylang support",
+    "No storefront scripts or styles, no tracking"
+  ]
+}
+-->
+<section class="page-head">
+<div class="wrap">
+<h1>Every BulkTab feature, explained</h1>
+<p class="lead">Everything on this page is in the free plugin, fully working, with no locked features. The last section covers what the BulkTab Pro add-on adds for large catalogs.</p>
+<div class="btn-row">
+<a class="btn btn-primary" href="{{FREE_URL}}">Get BulkTab free</a>
+<a class="btn btn-secondary" href="/pricing/">See what Pro adds</a>
+</div>
+</div>
+</section>
+
+<div class="wrap">
+<section class="feature" id="shared-tabs" aria-labelledby="h-shared">
+<div>
+<h2 id="h-shared">How do I show one tab on many products?</h2>
+<p>Create a <strong>shared tab</strong> under Products → Shared tabs, such as Shipping, Returns or a Size guide. Choose where it appears: all products, or every product in chosen categories, tags or brands.</p>
+<ul class="checks">
+<li>Sub-categories are included, so a tab for Shoes also shows on Boots and Sneakers.</li>
+<li>New products in that category get the tab automatically. No extra step.</li>
+<li>Edit the shared tab once and every product shows the new version on the next page load.</li>
+<li>Attach a shared tab to a single product, or hide it on one product, without touching the rule.</li>
+</ul>
+<p>Step by step: <a href="/blog/add-custom-product-tab-woocommerce/">how to add a custom product tab in WooCommerce</a>.</p>
+</div>
+{{figure:s3}}
+</section>
+
+<section class="feature flip" id="product-tabs" aria-labelledby="h-own">
+<div>
+<h2 id="h-own">What can a product tab contain?</h2>
+<p>Besides shared tabs, each product can have up to 20 tabs of its own. A tab can hold text, tables, images, video embeds, links to PDFs and shortcodes, written in the normal WordPress editor.</p>
+<p>Use BulkTab for size charts, shipping and returns, specifications, care instructions, warranty details, product FAQs, downloads and manuals.</p>
+<p>Step by step: <a href="/blog/woocommerce-size-chart-tab/">how to add a size chart to WooCommerce products</a>.</p>
+</div>
+{{figure:s1}}
+</section>
+
+<section class="feature" id="storage" aria-labelledby="h-storage">
+<div>
+<h2 id="h-storage">How does BulkTab keep tab content from being lost?</h2>
+<ul class="checks">
+<li>Tabs are stored as plain fields, one value each, not one fragile block of data. Imports, search-and-replace and site migrations leave them intact.</li>
+<li>The previous version of every product tab is kept, so a bad edit can be restored from the product's Tabs panel.</li>
+<li>If BulkTab ever finds tab data it can't read, it tells you which product is affected and keeps the data untouched. It never silently shows an empty tab.</li>
+<li>Deleting the plugin keeps your tabs unless you choose otherwise, so reinstalling brings everything back.</li>
+</ul>
+<p>Background: <a href="/blog/woocommerce-product-tabs-disappeared/">why WooCommerce product tabs disappear, and how to prevent it</a>.</p>
+</div>
+{{figure:s4}}
+</section>
+
+<section class="feature flip" id="control" aria-labelledby="h-control">
+<div>
+<h2 id="h-control">Can I rename, reorder or hide the default WooCommerce tabs?</h2>
+<p>Yes. Rename, reorder or hide any tab, including WooCommerce's Description, Additional information and Reviews tabs, for the whole store under Products → Tab settings. On a single product, reorder or hide tabs in its Tabs panel.</p>
+<ul class="checks">
+<li>Rename "Description" to "Details", or hide the Reviews tab where you don't need it.</li>
+<li>Drag tabs into the order you want.</li>
+<li>Empty tabs are hidden automatically.</li>
+</ul>
+<p>Step by step: <a href="/blog/rename-reorder-remove-woocommerce-tabs/">rename, reorder or remove WooCommerce product tabs</a>.</p>
+</div>
+{{figure:s4b}}
+</section>
+
+<section class="feature" id="csv" aria-labelledby="h-csv">
+<div>
+<h2 id="h-csv">Can I edit tabs in a spreadsheet?</h2>
+<p>Yes, with WooCommerce's own product CSV export and import. BulkTab adds readable columns such as "BulkTab 1 title" and "BulkTab 1 content".</p>
+<ul class="checks">
+<li>Excel and Google Sheets safe: edit the file and import it back with "Update existing products" ticked.</li>
+<li>Leave a column out and that data stays as it is.</li>
+<li>Type <code>[keep]</code> in a cell to leave just that cell unchanged.</li>
+</ul>
+</div>
+<div>
+<p>The BulkTab columns of a real export from our test store:</p>
+<pre class="csv-header"><code>"BulkTab 1 title","BulkTab 1 content","BulkTab attached","BulkTab hidden","BulkTab order"</code></pre>
+</div>
+</section>
+
+<section class="feature flip" id="import" aria-labelledby="h-import">
+<div>
+<h2 id="h-import">How do I switch from another tab plugin?</h2>
+<p>Go to Products → Import tabs. BulkTab imports your existing product tabs and saved tabs in one click.</p>
+<ul class="checks">
+<li>A dry run first lists how many products and tabs will be imported, and any problems, before anything is written.</li>
+<li>Your old plugin's data is never changed.</li>
+<li>Running the import again doesn't create duplicates.</li>
+<li>While both plugins are active, each tab appears only once on the product page.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Safe to try</h3>
+<p>The dry run writes nothing, and the import never changes the other plugin's data, so you can check the result before you deactivate the old plugin.</p>
+</div>
+</section>
+
+<section class="feature" id="compatibility" aria-labelledby="h-compat">
+<div>
+<h2 id="h-compat">Will it work with my theme, page builder or translation plugin?</h2>
+<p>Classic themes and block themes using WooCommerce's default product template show the tabs automatically. If your theme or page builder (Elementor, Divi and others) uses its own product layout, place a shortcode where the tabs should appear. Tab titles and content are translatable with WPML and Polylang.</p>
+</div>
+<div class="table-wrap">
+<table>
+<caption class="visually-hidden">BulkTab shortcodes</caption>
+<thead><tr><th scope="col">Shortcode</th><th scope="col">Shows</th></tr></thead>
+<tbody>
+<tr><td><code>[bulktab_tabs]</code></td><td>All tabs of the current product.</td></tr>
+<tr><td><code>[bulktab_tab key="size-guide"]</code></td><td>One shared tab, by its Tab ID (shown in the shared tab's sidebar).</td></tr>
+<tr><td><code>[bulktab_tab slot="1"]</code></td><td>One of the product's own tabs, by its number.</td></tr>
+<tr><td><code>[bulktab_tabs id="123"]</code></td><td>The tabs of a specific product, outside the product page.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="feature flip" id="light" aria-labelledby="h-light">
+<div>
+<h2 id="h-light">Will it slow down my store or track anything?</h2>
+<ul class="checks">
+<li>No extra scripts or styles on your storefront. Your theme and WooCommerce display the tabs.</li>
+<li>No tracking, no data sent anywhere, no pop-ups and no repeating notices.</li>
+<li>Everything described here is free and fully working. There are no locked features, trials or licence checks in the free plugin.</li>
+</ul>
+</div>
+{{figure:s2}}
+</section>
+</div>
+
+<section class="section section-soft" id="pro" aria-labelledby="h-pro">
+<div class="wrap">
+<h2 id="h-pro">What BulkTab Pro adds</h2>
+<p class="lead">BulkTab Pro is a separate add-on for stores that manage tabs at scale. It costs $49.99/year for 1 site and requires the free plugin.</p>
+
+<div class="feature">
+<div>
+<h3>Combined rules with a live count</h3>
+<p>Combine categories, tags and brands with AND, OR and NOT, plus always-include and never-show product lists. For example: "Shoes, but not products tagged Sale". While you edit a rule, a live count shows how many products match.</p>
+</div>
+{{figure:s7}}
+</div>
+
+<div class="feature flip">
+<div>
+<h3>Bulk changes with one-click undo</h3>
+<p>Add, attach, hide, replace or remove tabs across thousands of products. Every job starts with a preview, runs in the background, and the whole job can be undone with one click.</p>
+</div>
+{{figure:s8}}
+</div>
+
+<div class="feature">
+<div>
+<h3>Backup, restore and more</h3>
+<ul class="checks">
+<li>Full backup and restore of all tab data, including from staging to live (products are matched by SKU or slug).</li>
+<li>Per-product override of a shared tab: replace it on one product, or add text before or after it.</li>
+<li>WP All Import support.</li>
+</ul>
+<p><a href="/pricing/">Compare Free and Pro</a></p>
+</div>
+{{figure:s9}}
+</div>
+</div>
+</section>
+
+<section class="section" id="requirements" aria-labelledby="h-req">
+<div class="wrap narrow">
+<h2 id="h-req">What do I need?</h2>
+<ul>
+<li>WordPress 6.8 or later</li>
+<li>PHP 7.4 or later</li>
+<li>WooCommerce, using the classic product editor</li>
+</ul>
+</div>
+</section>
+
+{{> cta}}

@@ -1,0 +1,73 @@
+<!--page
+{
+  "path": "/support/",
+  "title": "BulkTab Support and Contact",
+  "h1": "Support",
+  "description": "Get help with BulkTab: WordPress.org forum for the free plugin, email for Pro, and fixes for theme and page-builder tab issues.",
+  "updated": "2026-11-24",
+  "section": "support",
+  "schema": []
+}
+-->
+<section class="page-head">
+<div class="wrap">
+<h1>BulkTab support and contact</h1>
+<p class="lead">Questions, bugs or ideas: here is where to ask, and fixes for the most common problems.</p>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+<div class="grid-2">
+<div class="card">
+<h2>Free plugin</h2>
+<p>Ask on the <a href="{{forumUrl}}">BulkTab support forum on WordPress.org</a>. Answers there help the next store owner with the same question.</p>
+</div>
+<div class="card">
+<h2>BulkTab Pro and everything else</h2>
+<p>Email <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>. Include your WordPress, WooCommerce and BulkTab versions, your theme, and a link to a product page that shows the problem.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-soft" id="troubleshooting" aria-labelledby="h-trouble">
+<div class="wrap narrow">
+<h2 id="h-trouble">Troubleshooting</h2>
+
+<h3>My theme or page builder doesn't show the tabs</h3>
+<p>Most themes, including block themes using WooCommerce's default product template, show the tabs automatically. If your theme or builder (Elementor, Divi and others) uses its own product layout, place one of these shortcodes where the tabs should appear:</p>
+<ul>
+<li><code>[bulktab_tabs]</code> shows all tabs of the current product.</li>
+<li><code>[bulktab_tab key="size-guide"]</code> shows one shared tab, by its Tab ID (shown in the shared tab's sidebar).</li>
+<li><code>[bulktab_tab slot="1"]</code> shows one of the product's own tabs, by its number.</li>
+</ul>
+<p>Add an <code>id</code> attribute with a product ID to show that product's tabs outside the product page.</p>
+
+<h3>I use a block theme with the accordion layout</h3>
+<p>With WooCommerce's default Product Details block, tabs work as in classic themes. If you switched that block to its accordion style, BulkTab's tabs are added as accordion items, but renaming, hiding or reordering the default WooCommerce sections must be done in the Site Editor.</p>
+
+<h3>A tab is missing on one product</h3>
+<p>Open the product, go to Product data → Tabs, and check whether the shared tab shows "Shows here by rule", and whether it is hidden on this product. Hiding wins over attaching. Empty tabs are also hidden automatically.</p>
+
+<h3>BulkTab says it found tab data it can't read</h3>
+<p>BulkTab names the product and leaves the data untouched rather than showing an empty tab. Email us with the product name and we'll help you look into it.</p>
+
+<h3>Requirements</h3>
+<p>BulkTab needs WordPress 6.8 or later, PHP 7.4 or later, and WooCommerce with the classic product editor.</p>
+
+<h3>What happens to my tabs if I delete the plugin?</h3>
+<p>They are kept, so reinstalling brings them back. Tab data is only removed if you first tick "Delete all BulkTab data when the plugin is deleted" under Products → Tab settings.</p>
+</div>
+</section>
+
+<section class="section" id="about" aria-labelledby="h-about">
+<div class="wrap narrow">
+<h2 id="h-about">About Waukegan Labs</h2>
+<p>BulkTab is made by {{company.name}} in {{company.city}}, {{company.region}}. The Waukegan Labs team writes the guides on this site and answers support email.</p>
+<p>We built BulkTab after reading 530 reviews of eight product-tab plugins and 750 support threads. The plugin's source code is <a href="{{githubUrl}}">public on GitHub</a>, and every change runs 52 automated end-to-end checks on a real WordPress and WooCommerce store.</p>
+<p>Email: <a href="mailto:{{supportEmail}}">{{supportEmail}}</a></p>
+</div>
+</section>
+
+{{> cta}}

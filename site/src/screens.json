@@ -1,0 +1,57 @@
+{
+  "s1": {
+    "file": "s1-shared-tab-editor.webp",
+    "alt": "BulkTab shared tab editor in WordPress: a tab titled \"Size guide – shoes\" with a shoe size table, set to show on products in the Shoes category.",
+    "caption": "One shared tab, written once, shown on every product in Shoes and its sub-categories."
+  },
+  "s1b": {
+    "file": "s1b-show-this-tab-on.webp",
+    "alt": "The \"Show this tab on\" box of a BulkTab shared tab: Products in… is selected, the taxonomy is Category and Shoes is chosen, with the note that sub-categories are included and the Tab ID size-guide-shoes.",
+    "caption": "One rule does the work: show this tab on every product in Shoes, sub-categories included."
+  },
+  "s2": {
+    "file": "s2-storefront-size-guide.webp",
+    "alt": "A WooCommerce product page with the tabs Details, Shipping & returns, Size guide – shoes, Warranty, Gift wrap and Materials; the size guide tab is open and shows an EU, US and UK shoe size table.",
+    "caption": "The storefront: the theme and WooCommerce display the tabs. BulkTab adds no scripts or styles."
+  },
+  "s3": {
+    "file": "s3-shared-tabs-list.webp",
+    "alt": "The Products → Shared tabs screen listing six shared tabs: Care instructions, Gift wrap, Shipping & returns, Size guide – apparel, Size guide – shoes and Warranty.",
+    "caption": "All shared tabs in one list under Products → Shared tabs."
+  },
+  "s4": {
+    "file": "s4-product-tabs-panel.webp",
+    "alt": "The Tabs panel of a WooCommerce product: a table of shared tabs with \"Shows here by rule\" or \"Not shown by rule\" badges and attach or hide checkboxes, and below it the product's own Materials tab in an editor.",
+    "caption": "Per product: see which shared tabs apply, attach or hide one, and add the product's own tabs."
+  },
+  "s4b": {
+    "file": "s4b-product-tab-order.webp",
+    "alt": "Tab order list for one product: Details, Additional information (struck through and marked hidden), Shipping & returns, Size guide – shoes, Warranty, Gift wrap and Materials, each with up and down arrows.",
+    "caption": "Reorder or hide any tab on a single product, including the WooCommerce defaults."
+  },
+  "s5": {
+    "file": "s5-tab-settings.webp",
+    "alt": "The Products → Tab settings screen: the Description tab renamed to Details, the Reviews tab ticked as hidden, and shared tabs listed in a drag-and-drop order.",
+    "caption": "Store-wide tab layout: Description renamed to Details, Reviews hidden."
+  },
+  "s7": {
+    "file": "s7-pro-combined-rule.webp",
+    "alt": "BulkTab Pro rule editor: show the tab on products where Category is Shoes and Tag is not Sale, with always-include and never-show product fields and a live line reading \"Matches 8 products\".",
+    "caption": "BulkTab Pro: combined rules with exclusions, and a live count of matching products."
+  },
+  "s8": {
+    "file": "s8-pro-bulk-preview.webp",
+    "alt": "BulkTab Pro bulk tool dry run for replacing \"Machine wash at 40°C\" with \"Machine wash at 30°C\" in Apparel: counts of products selected, that will change, already done and skipped, and the first before-and-after examples.",
+    "caption": "BulkTab Pro: every bulk change starts with a dry run that counts what will change."
+  },
+  "s8b": {
+    "file": "s8b-pro-bulk-job-undo.webp",
+    "alt": "A finished BulkTab Pro bulk job with a progress bar, a summary of changed products and an \"Undo this job\" button.",
+    "caption": "BulkTab Pro: undo the whole job with one click."
+  },
+  "s9": {
+    "file": "s9-pro-backups.webp",
+    "alt": "BulkTab Pro Tab backups screen with a Create backup now button, a weekly backup option and a list of backups with Download, Restore and Delete actions.",
+    "caption": "BulkTab Pro: full backup and restore of all tab data, including from staging to live."
+  }
+}

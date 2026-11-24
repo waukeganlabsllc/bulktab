@@ -1,0 +1,36 @@
+{
+  "siteUrl": "https://bulktab.waukeganlabs.com",
+  "siteName": "BulkTab",
+  "productName": "BulkTab – Bulk Product Tabs for WooCommerce",
+  "FREE_URL": "https://wordpress.org/plugins/bulktab/",
+  "forumUrl": "https://wordpress.org/support/plugin/bulktab/",
+  "githubUrl": "https://github.com/waukeganlabsllc/bulktab",
+  "supportEmail": "bulktab-support@waukeganlabs.com",
+  "eulaUrl": "https://product.freemius.com/46190/bulktab-pro/legal/eula/",
+  "company": {
+    "name": "Waukegan Labs LLC",
+    "city": "Redwood City",
+    "region": "California",
+    "regionCode": "CA",
+    "country": "US"
+  },
+  "author": {
+    "type": "Organization",
+    "name": "Waukegan Labs team",
+    "url": "https://bulktab.waukeganlabs.com/support/#about",
+    "bio": "We are the small team at Waukegan Labs LLC in Redwood City, California, that builds and supports BulkTab. Before writing any code we read 530 reviews of eight product-tab plugins and 750 support threads, and these guides come from that research and from testing every snippet on a real WordPress and WooCommerce store."
+  },
+  "pro": {
+    "price": "49.99",
+    "currency": "USD",
+    "period": "year",
+    "sites": 1
+  },
+  "freemius": {
+    "productId": 46190,
+    "planId": 81330,
+    "publicKey": "pk_b98508e9c95a26311a9fa53379d9e",
+    "script": "https://checkout.freemius.com/js/v1/",
+    "checkoutUrl": "https://checkout.freemius.com/product/46190/plan/81330/"
+  }
+}
