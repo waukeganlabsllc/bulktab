@@ -424,14 +424,13 @@ final class Migrator {
 	 * @return array<string,string> source => key.
 	 */
 	private static function existing_shared(): array {
-		$ids = get_posts(
+		$ids = \BulkTab\I18n::all_language_posts(
 			array(
-				'post_type'        => PostType::NAME,
-				'post_status'      => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
-				'fields'           => 'ids',
-				'posts_per_page'   => -1,
-				'meta_key'         => self::SOURCE_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Admin-only, small set.
-				'suppress_filters' => true,
+				'post_type'      => PostType::NAME,
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'fields'         => 'ids',
+				'posts_per_page' => -1,
+				'meta_key'       => self::SOURCE_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Admin-only, small set.
 			)
 		);
 		$out = array();

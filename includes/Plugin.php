@@ -38,7 +38,7 @@ final class Plugin {
 			return;
 		}
 
-		load_plugin_textdomain( 'bulktab', false, dirname( plugin_basename( BULKTAB_FILE ) ) . '/languages' );
+		// Translations load automatically from translate.wordpress.org (WP 4.6+).
 
 		self::maybe_upgrade();
 

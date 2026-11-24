@@ -44,17 +44,17 @@ final class RulesIndex {
 	 * Rebuild the index from all published shared tabs.
 	 */
 	public static function rebuild(): void {
-		$ids   = get_posts(
+		// Index all languages; WPML/Polylang resolve the right translation at render.
+		$ids   = I18n::all_language_posts(
 			array(
-				'post_type'        => PostType::NAME,
-				'post_status'      => 'publish',
-				'fields'           => 'ids',
-				'posts_per_page'   => -1,
-				'orderby'          => array(
+				'post_type'      => PostType::NAME,
+				'post_status'    => 'publish',
+				'fields'         => 'ids',
+				'posts_per_page' => -1,
+				'orderby'        => array(
 					'menu_order' => 'ASC',
 					'ID'         => 'ASC',
 				),
-				'suppress_filters' => true, // Index all languages; WPML/Polylang resolve at render.
 			)
 		);
 		$index = array();

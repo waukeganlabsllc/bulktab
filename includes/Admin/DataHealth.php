@@ -109,13 +109,12 @@ final class DataHealth {
 	 * @return array<int, string[]>
 	 */
 	public static function find_unreadable_rules(): array {
-		$ids   = get_posts(
+		$ids   = \BulkTab\I18n::all_language_posts(
 			array(
 				'post_type'      => PostType::NAME,
 				'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
 				'fields'         => 'ids',
 				'posts_per_page' => -1,
-				'lang'           => '', // Polylang: all languages.
 			)
 		);
 		$found = array();

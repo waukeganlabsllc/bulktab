@@ -69,4 +69,26 @@ final class I18n {
 		}
 		return $term_id;
 	}
+
+	/**
+	 * Get_posts() across all languages (WPML / Polylang) without suppress_filters,
+	 * which WordPress.org's Plugin Check prohibits.
+	 *
+	 * @param array $args get_posts() arguments.
+	 * @return array
+	 */
+	public static function all_language_posts( array $args ): array {
+		$args['lang'] = ''; // Polylang: all languages.
+		$switched     = false;
+		if ( has_action( 'wpml_switch_language' ) ) {
+			$current = apply_filters( 'wpml_current_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's hook.
+			do_action( 'wpml_switch_language', 'all' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's hook.
+			$switched = true;
+		}
+		$posts = get_posts( $args );
+		if ( $switched ) {
+			do_action( 'wpml_switch_language', $current ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's hook.
+		}
+		return $posts;
+	}
 }

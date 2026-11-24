@@ -12,7 +12,6 @@
  * License:              GPL-2.0-or-later
  * License URI:          https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:          bulktab
- * Domain Path:          /languages
  * WC requires at least: 11.1
  * WC tested up to:      11.3
  *
