@@ -24,6 +24,7 @@ MOUNTS=(--mount="$FREE:/wordpress/wp-content/plugins/bulktab" --mount="$OUT:/smo
 if [ -n "$PRO" ]; then
 	MOUNTS+=(--mount="$PRO:/wordpress/wp-content/plugins/bulktab-pro")
 	BLUEPRINT="$PRO/tests/smoke/blueprint.json"
+	MOUNTS+=(--define-bool BULKTAB_PRO_DEV true)
 fi
 
 "$TOOLS/node_modules/.bin/wp-playground-cli" server --port="$PORT" --php=8.3 "${MOUNTS[@]}" \
@@ -39,4 +40,4 @@ for _ in $(seq 1 120); do
 	sleep 3
 done
 
-php "$FREE/tests/smoke/check.php" "$OUT" "http://127.0.0.1:$PORT"
+php "$FREE/tests/smoke/check.php" "$OUT" "http://127.0.0.1:$PORT" "$PRO"

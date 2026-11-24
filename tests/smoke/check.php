@@ -92,9 +92,14 @@ if ( isset( $ids['shirt'] ) ) {
 	check( 'R-2', 'Edited content shows on the product page', false !== strpos( $shirt, 'pre-washed' ) && false !== strpos( $shirt, '<strong>cotton</strong>' ) );
 }
 
-// Pro checks are appended by tests/smoke/check-pro.php when Pro is mounted.
-if ( is_file( "$dir/pro.json" ) && is_file( __DIR__ . '/check-pro.php' ) ) {
-	require __DIR__ . '/check-pro.php';
+// Pro checks live in the Pro repo: pass its path as the 3rd argument.
+$pro_dir = $argv[3] ?? '';
+if ( '' !== $pro_dir ) {
+	if ( is_file( "$dir/pro.json" ) ) {
+		require rtrim( $pro_dir, '/' ) . '/tests/smoke/check-pro.php';
+	} else {
+		check( 'PRO', 'Pro fixture ran', false, 'no pro.json' );
+	}
 }
 
 $log = is_file( "$dir/debug.log" ) ? (string) file_get_contents( "$dir/debug.log" ) : '';
