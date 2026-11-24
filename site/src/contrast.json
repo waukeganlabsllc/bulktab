@@ -125,5 +125,78 @@
     "fg": "#F5A524",
     "bg": "#152A45",
     "large": true
+  },
+  {
+    "use": "v2 ink text on white",
+    "fg": "#0E1726",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "v2 ink text on tiles",
+    "fg": "#0E1726",
+    "bg": "#F7F8FA"
+  },
+  {
+    "use": "v2 muted text on white",
+    "fg": "#556070",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "v2 muted text on tiles",
+    "fg": "#556070",
+    "bg": "#F7F8FA"
+  },
+  {
+    "use": "v2 grey second sentence of headings (large) on white",
+    "fg": "#6B7585",
+    "bg": "#FFFFFF",
+    "large": true
+  },
+  {
+    "use": "v2 grey second sentence of headings (large) on tiles",
+    "fg": "#6B7585",
+    "bg": "#F7F8FA",
+    "large": true
+  },
+  {
+    "use": "v2 white text on ink buttons and dark bands",
+    "fg": "#FFFFFF",
+    "bg": "#0E1726"
+  },
+  {
+    "use": "v2 ink text on white buttons in dark bands",
+    "fg": "#0E1726",
+    "bg": "#FFFFFF"
+  },
+  {
+    "use": "v2 light text on dark bands",
+    "fg": "#C6CDD8",
+    "bg": "#0E1726"
+  },
+  {
+    "use": "v2 grey heading sentence on dark bands (large)",
+    "fg": "#98A2B3",
+    "bg": "#0E1726",
+    "large": true
+  },
+  {
+    "use": "v2 white text on primary button hover",
+    "fg": "#FFFFFF",
+    "bg": "#26344A"
+  },
+  {
+    "use": "v2 footer text on ink",
+    "fg": "#D9E2EE",
+    "bg": "#0E1726"
+  },
+  {
+    "use": "v2 footer links on ink",
+    "fg": "#FFFFFF",
+    "bg": "#0E1726"
+  },
+  {
+    "use": "v2 amber focus ring on ink (non-text)",
+    "fg": "#F5A524",
+    "bg": "#0E1726"
   }
 ]
