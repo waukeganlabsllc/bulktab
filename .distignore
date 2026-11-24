@@ -33,3 +33,6 @@
 *.md
 *.zip
 .DS_Store
+
+# Marketing site (deployed separately to Cloudflare)
+/site

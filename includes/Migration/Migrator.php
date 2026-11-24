@@ -343,7 +343,7 @@ final class Migrator {
 		}
 		ImportPage::notice(
 			'info',
-			__( 'BulkTab found tabs from Custom Product Tabs for WooCommerce. Preview the import first: the preview changes nothing, and the import never changes or deletes the original data.', 'bulktab' ),
+			__( 'BulkTab found tabs from your previous tab plugin. Preview the import first: the preview changes nothing, and the import never changes or deletes the original data.', 'bulktab' ),
 			array(
 				__( 'Preview import', 'bulktab' ) => ImportPage::url(),
 				__( 'Dismiss', 'bulktab' )        => ImportPage::action_url( 'dismiss' ),

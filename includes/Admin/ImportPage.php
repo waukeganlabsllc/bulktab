@@ -46,7 +46,7 @@ final class ImportPage {
 	public static function add_page(): void {
 		$hook = add_submenu_page(
 			'edit.php?post_type=product',
-			__( 'Import from Custom Product Tabs', 'bulktab' ),
+			__( 'Import tabs', 'bulktab' ),
 			__( 'Import tabs', 'bulktab' ),
 			self::CAP,
 			self::SLUG,
@@ -153,11 +153,11 @@ final class ImportPage {
 		}
 		$job = Migrator::get_job();
 
-		echo '<div class="wrap"><h1>' . esc_html__( 'Import from Custom Product Tabs', 'bulktab' ) . '</h1>';
-		echo '<p>' . esc_html__( 'Copies the tabs made with "Custom Product Tabs for WooCommerce" (YIKES) into BulkTab. Saved tabs become shared tabs, attached to the products that used them; other tabs become the products\' own tabs, in the same order. The original data is never changed or deleted, and running the import again does not duplicate anything.', 'bulktab' ) . '</p>';
+		echo '<div class="wrap"><h1>' . esc_html__( 'Import tabs from your previous tab plugin', 'bulktab' ) . '</h1>';
+		echo '<p>' . esc_html__( 'Copies the tabs made with your previous product-tab plugin into BulkTab. Saved tabs become shared tabs, attached to the products that used them; other tabs become the products\' own tabs, in the same order. The original data is never changed or deleted, and running the import again does not duplicate anything.', 'bulktab' ) . '</p>';
 
 		if ( ! $job && ! YikesSource::has_data() ) {
-			echo '<p><strong>' . esc_html__( 'No Custom Product Tabs data was found on this site.', 'bulktab' ) . '</strong></p></div>';
+			echo '<p><strong>' . esc_html__( 'No tabs from a supported tab plugin were found on this site.', 'bulktab' ) . '</strong></p></div>';
 			return;
 		}
 
@@ -292,7 +292,7 @@ final class ImportPage {
 			'saved_tab_missing'    => __( 'Linked to a saved tab that no longer exists; kept as the product\'s own tab.', 'bulktab' ),
 			'applied_without_copy' => __( 'Listed as using a saved tab, but the tab was not on the product; not attached.', 'bulktab' ),
 			'overflow'             => __( 'Not imported: the product already has 20 tabs.', 'bulktab' ),
-			'conflict'             => __( 'Changed in Custom Product Tabs and edited in BulkTab since the last import; not overwritten.', 'bulktab' ),
+			'conflict'             => __( 'Changed in your previous tab plugin and edited in BulkTab since the last import; not overwritten.', 'bulktab' ),
 			'write_error'          => __( 'Could not be saved; it will be retried next time.', 'bulktab' ),
 			'option_repaired'      => __( 'Damaged saved-tab settings were repaired.', 'bulktab' ),
 			'option_unreadable'    => __( 'Saved-tab settings could not be read; their tabs are imported as product tabs.', 'bulktab' ),
