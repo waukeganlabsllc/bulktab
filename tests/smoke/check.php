@@ -50,6 +50,7 @@ $ht   = tabs( $hat );
 check( 'R-15', 'Shared tab by parent category shows on sub-category product', in_array( 'Size guide', $bt, true ), $bt );
 check( 'R-15', 'Category tab does not show on product outside it', ! in_array( 'Size guide', $ht, true ), $ht );
 check( 'R-13', '"All products" shared tab shows on a product', in_array( 'Shipping', $bt, true ), $bt );
+check( 'R-14', 'Editing a shared tab updates products instantly', false !== strpos( $boot, 'Ships in 2 days.' ) && false === strpos( $boot, 'Ships in 3 days.' ) );
 check( 'R-13', 'Manual-only shared tab is not shown unless attached', ! in_array( 'Gift wrap', $bt, true ), $bt );
 check( 'R-13', 'Attached shared tab shows on that product', in_array( 'Gift wrap', $ht, true ), $ht );
 check( 'R-12', 'Shared tab table content renders', false !== strpos( $boot, '<td>EU 42</td>' ) );
@@ -66,6 +67,12 @@ check( 'R-28', 'Per-product hide of a shared tab', ! in_array( 'Shipping', $ht, 
 check( 'R-28', 'Per-product hide of Reviews', ! preg_grep( '/^Reviews/', $ht ), $ht );
 check( 'R-28', 'Hide on one product leaves others alone', (bool) preg_grep( '/^Reviews/', $bt ), $bt );
 check( 'R-21', 'Tabs render in the default block theme', count( $bt ) >= 4, $bt );
+
+// Manual placement + uninstall safety.
+$sc = (string) shell_exec( 'curl -sS -L --max-redirs 5 --max-time 120 -c ' . escapeshellarg( "$dir/jar.txt" ) . ' -b ' . escapeshellarg( "$dir/jar.txt" ) . ' ' . escapeshellarg( "$base/?page_id=" . (int) ( $ids['sc_page'] ?? 0 ) ) );
+$sc = html_entity_decode( $sc, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+check( 'R-23', 'Shortcode outputs the tabs on any page', false !== strpos( $sc, '<td>EU 42</td>' ) && false !== strpos( $sc, 'Wash at C:\\cold' ) );
+check( 'R-5', 'Uninstall without opt-in keeps all tab data', isset( $ids['uninstall_before'] ) && $ids['uninstall_before'] === $ids['uninstall_after'] && $ids['uninstall_before'][0] > 0, array( $ids['uninstall_before'] ?? null, $ids['uninstall_after'] ?? null ) );
 
 // YIKES import (fixture must exist; a missing fixture is a failure, not a skip).
 check( 'R-6', 'YIKES fixture ran', isset( $ids['mug'], $ids['yikes_run'] ) );

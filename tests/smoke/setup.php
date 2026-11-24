@@ -54,7 +54,9 @@ $out['size_guide'] = $shared(
 	'<table><tr><td>EU 42</td><td>US 9</td></tr></table>',
 	array_merge( $none, array( 'groups' => array( array( array( 'tax' => 'product_cat', 'terms' => array( $shoes['term_id'] ), 'not' => false ) ) ) ) )
 );
-$out['shipping']   = $shared( 'Shipping', 'Ships in 2 days.', array_merge( $none, array( 'all' => true ) ) );
+$out['shipping']   = $shared( 'Shipping', 'Ships in 3 days.', array_merge( $none, array( 'all' => true ) ) );
+// R-14: editing a shared tab once updates every product (no copies to sync).
+wp_update_post( array( 'ID' => $out['shipping'], 'post_content' => 'Ships in 2 days.' ) );
 $out['empty']      = $shared( 'Empty tab', "  <p>&nbsp;</p>\n", array_merge( $none, array( 'all' => true ) ) );
 $out['manual']     = $shared( 'Gift wrap', 'Gift wrap available.', $none );
 
@@ -172,6 +174,26 @@ $importer             = new WC_Product_CSV_Importer(
 $result               = $importer->import();
 $out['csv_result']    = array( 'updated' => count( $result['updated'] ), 'failed' => count( $result['failed'] ), 'skipped' => count( $result['skipped'] ) );
 $out['csv_after']     = get_post_meta( $out['shirt'], '_bulktab_1_content', true );
+
+
+// ---------------------------------------------------------------- R-23: manual placement via shortcode
+$out['sc_page'] = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'Tabs anywhere', 'post_content' => '[bulktab_tabs id="' . $out['boot'] . '"]' ) );
+
+// ---------------------------------------------------------------- R-5: uninstall without opt-in keeps data
+$tab_state = static function () use ( $out ) {
+	return array(
+		count( get_posts( array( 'post_type' => 'bulktab_tab', 'post_status' => 'any', 'posts_per_page' => -1, 'fields' => 'ids' ) ) ),
+		get_post_meta( $out['boot'], '_bulktab_1_content', true ),
+		get_option( 'bulktab_layout' ),
+	);
+};
+$out['uninstall_before'] = $tab_state();
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	define( 'WP_UNINSTALL_PLUGIN', 'bulktab/bulktab.php' );
+}
+delete_option( 'bulktab_delete_data_on_uninstall' );
+include WP_PLUGIN_DIR . '/bulktab/uninstall.php';
+$out['uninstall_after'] = $tab_state();
 
 $out['keys'] = array_keys( BulkTab\RulesIndex::get() );
 file_put_contents( '/smoke-out/ids.json', wp_json_encode( $out, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) );
