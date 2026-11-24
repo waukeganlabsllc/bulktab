@@ -451,7 +451,7 @@ ${llmsLine(page('/pricing/'))}
 ${[page('/blog/'), ...posts.map((p) => page(p.path))].map(llmsLine).join('\n')}
 
 ## Support
-${[page('/support/'), page('/privacy/')].map(llmsLine).join('\n')}
+${[page('/support/'), page('/privacy/'), page('/terms/')].map(llmsLine).join('\n')}
 - [Support email](mailto:${cfg.supportEmail}): BulkTab Pro customers and general questions.
 - [WordPress.org support forum](${cfg.forumUrl}): free plugin support.
 `;
