@@ -22,18 +22,33 @@ use BulkTab\TabStore;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Product data "Tabs" panel.
+ */
 final class ProductPanel {
 
 	const NONCE  = 'bulktab_product_nonce';
 	const TARGET = 'bulktab_product_data';
 
-	/** @var TabStore */
+	/**
+	 * Tab storage.
+	 *
+	 * @var TabStore
+	 */
 	private $store;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param MetaStore $meta Meta storage.
+	 */
 	public function __construct( MetaStore $meta ) {
 		$this->store = new TabStore( $meta );
 	}
 
+	/**
+	 * Register hooks.
+	 */
 	public function register_hooks(): void {
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_tab' ) );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'render' ) );
@@ -42,10 +57,13 @@ final class ProductPanel {
 	}
 
 	/**
+	 * Add the "Tabs" product data tab.
+	 *
 	 * @param array $tabs Product data tabs.
+	 * @return array
 	 */
 	public function add_tab( $tabs ): array {
-		$tabs          = is_array( $tabs ) ? $tabs : array();
+		$tabs            = is_array( $tabs ) ? $tabs : array();
 		$tabs['bulktab'] = array(
 			'label'    => __( 'Tabs', 'bulktab' ),
 			'target'   => self::TARGET,
@@ -82,12 +100,11 @@ final class ProductPanel {
 		);
 	}
 
-	/*
-	------------------------------------------------------------------ */
-	/*
-	Render                                                             */
-	/* ------------------------------------------------------------------ */
+	// Render.
 
+	/**
+	 * Print the panel (woocommerce_product_data_panels).
+	 */
 	public function render(): void {
 		global $post;
 		$product_id = ( $post instanceof \WP_Post ) ? (int) $post->ID : 0;
@@ -118,6 +135,14 @@ final class ProductPanel {
 		<?php
 	}
 
+	/**
+	 * Shared tabs table: attach / hide per product.
+	 *
+	 * @param array    $index    RulesIndex::get().
+	 * @param array    $ctx      ProductContext::for_product().
+	 * @param string[] $attached Attached shared-tab keys.
+	 * @param string[] $hidden   Hidden refs.
+	 */
 	private function render_shared( array $index, array $ctx, array $attached, array $hidden ): void {
 		?>
 		<div class="bulktab-section bulktab-shared">
@@ -192,6 +217,12 @@ final class ProductPanel {
 		<?php
 	}
 
+	/**
+	 * This product's own tabs and the "Add a tab" rows.
+	 *
+	 * @param array    $tabs   TabStore::get_tabs().
+	 * @param string[] $hidden Hidden refs.
+	 */
 	private function render_own( array $tabs, array $hidden ): void {
 		$remaining = TabStore::MAX_TABS - count( $tabs );
 		?>
@@ -272,6 +303,13 @@ final class ProductPanel {
 		<?php
 	}
 
+	/**
+	 * Rich editor for an existing tab (textarea fallback).
+	 *
+	 * @param string $content   Tab HTML.
+	 * @param string $editor_id Editor element ID.
+	 * @param string $name      Field name.
+	 */
 	private function editor( string $content, string $editor_id, string $name ): void {
 		if ( function_exists( 'wp_editor' ) ) {
 			wp_editor(
@@ -294,6 +332,16 @@ final class ProductPanel {
 		);
 	}
 
+	/**
+	 * Sortable tab order list.
+	 *
+	 * @param array    $index    RulesIndex::get().
+	 * @param array    $ctx      ProductContext::for_product().
+	 * @param string[] $attached Attached shared-tab keys.
+	 * @param string[] $hidden   Hidden refs.
+	 * @param string[] $order    Saved order (refs).
+	 * @param array    $tabs     TabStore::get_tabs().
+	 */
 	private function render_order( array $index, array $ctx, array $attached, array $hidden, array $order, array $tabs ): void {
 		$items = $this->order_items( $index, $ctx, $attached, $hidden, $order, $tabs );
 		?>
@@ -344,6 +392,12 @@ final class ProductPanel {
 	/**
 	 * Refs this product will show, sorted by saved order (if any) else default priority.
 	 *
+	 * @param array    $index    RulesIndex::get().
+	 * @param array    $ctx      ProductContext::for_product().
+	 * @param string[] $attached Attached shared-tab keys.
+	 * @param string[] $hidden   Hidden refs.
+	 * @param string[] $order    Saved order (refs).
+	 * @param array    $tabs     TabStore::get_tabs().
 	 * @return array<int, array{ref:string,label:string,type:string,hidden:bool}>
 	 */
 	private function order_items( array $index, array $ctx, array $attached, array $hidden, array $order, array $tabs ): array {
@@ -428,13 +482,11 @@ final class ProductPanel {
 		return array_values( $items );
 	}
 
-	/*
-	------------------------------------------------------------------ */
-	/*
-	Save                                                               */
-	/* ------------------------------------------------------------------ */
+	// Save.
 
 	/**
+	 * Save the panel (woocommerce_process_product_meta).
+	 *
 	 * @param int $post_id Product ID.
 	 */
 	public function save( $post_id ): void {
@@ -562,6 +614,7 @@ final class ProductPanel {
 	/**
 	 * Attach / hide / order lists. Refs not managed by the form are kept.
 	 *
+	 * @param int      $post_id    Product ID.
 	 * @param string[] $rendered   Own-tab refs that were on the form (not deleted).
 	 * @param string[] $hide_slots Own-tab refs ticked "Hide".
 	 * @param string[] $deleted    Own-tab refs deleted in this save.
@@ -613,7 +666,13 @@ final class ProductPanel {
 		return $errors;
 	}
 
-	/** True when two HTML strings differ only by editor formatting (paragraphs, whitespace). */
+	/**
+	 * True when two HTML strings differ only by editor formatting (paragraphs, whitespace).
+	 *
+	 * @param string $a HTML.
+	 * @param string $b HTML.
+	 * @return bool
+	 */
 	private static function same_content( string $a, string $b ): bool {
 		if ( $a === $b ) {
 			return true;

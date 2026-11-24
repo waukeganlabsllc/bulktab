@@ -9,9 +9,18 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Translation plugin helpers.
+ */
 final class I18n {
 
-	/** Shared-tab post in the current language (falls back to original). */
+	/**
+	 * Shared-tab post in the current language (falls back to the original).
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $type    Post type.
+	 * @return int
+	 */
 	public static function current_post_id( int $post_id, string $type ): int {
 		if ( has_filter( 'wpml_object_id' ) ) {
 			return (int) apply_filters( 'wpml_object_id', $post_id, $type, true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's hook.
@@ -23,6 +32,13 @@ final class I18n {
 		return $post_id;
 	}
 
+	/**
+	 * Post in the default language (rules and indexes store original IDs).
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $type    Post type.
+	 * @return int
+	 */
 	public static function original_post_id( int $post_id, string $type ): int {
 		if ( has_filter( 'wpml_object_id' ) ) {
 			$lang = apply_filters( 'wpml_default_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's hook.
@@ -35,6 +51,13 @@ final class I18n {
 		return $post_id;
 	}
 
+	/**
+	 * Term in the default language (rules store original term IDs).
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param string $taxonomy Taxonomy.
+	 * @return int
+	 */
 	public static function original_term_id( int $term_id, string $taxonomy ): int {
 		if ( has_filter( 'wpml_object_id' ) ) {
 			$lang = apply_filters( 'wpml_default_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's hook.

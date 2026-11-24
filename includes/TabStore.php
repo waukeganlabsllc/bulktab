@@ -62,6 +62,28 @@ final class TabStore {
 	}
 
 	/**
+	 * Slots whose title or content exists but can't be read as text (e.g. an
+	 * array written by another tool). These are never shown, reused or
+	 * overwritten; DataHealth reports them (R-4).
+	 *
+	 * @param int $product_id Product ID.
+	 * @return int[]
+	 */
+	public function unreadable_slots( int $product_id ): array {
+		$bad = array();
+		for ( $n = 1; $n <= self::MAX_TABS; $n++ ) {
+			foreach ( array( 'title', 'content' ) as $field ) {
+				$key = "_bulktab_{$n}_{$field}";
+				if ( null === $this->meta->get( $product_id, $key ) && $this->meta->has( $product_id, $key ) ) {
+					$bad[] = $n;
+					break;
+				}
+			}
+		}
+		return $bad;
+	}
+
+	/**
 	 * Save tabs. $tabs is slot => array( 'title', 'content' ); slot 0 / missing = new tab
 	 * (gets the lowest free slot). Slots not in $tabs are left alone; use delete_tab().
 	 * Content changes keep the old content in `_prev`; if that backup fails, the
@@ -72,11 +94,12 @@ final class TabStore {
 	 * @return string[] Error messages (empty on success). Callers must show these.
 	 */
 	public function save_tabs( int $product_id, array $tabs ): array {
-		$errors   = array();
-		$existing = $this->get_tabs( $product_id );
+		$errors     = array();
+		$existing   = $this->get_tabs( $product_id );
+		$unreadable = array_flip( $this->unreadable_slots( $product_id ) );
 
-		// Slots saved explicitly in this call are not free for new tabs, even if empty now.
-		$taken = $existing;
+		// Slots saved explicitly in this call, and unreadable slots, are not free for new tabs.
+		$taken = $existing + $unreadable;
 		foreach ( array_keys( $tabs ) as $slot ) {
 			$slot = (int) $slot;
 			if ( $slot >= 1 && $slot <= self::MAX_TABS ) {
@@ -93,6 +116,10 @@ final class TabStore {
 					$errors[] = sprintf( 'Tab "%s" was not added: the limit is %d tabs per product.', $tab['title'] ?? '', self::MAX_TABS );
 					continue;
 				}
+			}
+			if ( isset( $unreadable[ $slot ] ) ) {
+				$errors[] = sprintf( 'Tab %d was not saved: it holds data BulkTab can\'t read, which is kept as is. Delete that tab first to replace it.', $slot );
+				continue;
 			}
 			$title   = (string) ( $tab['title'] ?? '' );
 			$content = (string) ( $tab['content'] ?? '' );

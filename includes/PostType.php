@@ -11,15 +11,24 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Shared tab post type.
+ */
 final class PostType {
 
 	const NAME = 'bulktab_tab';
 
+	/**
+	 * Register hooks.
+	 */
 	public static function register_hooks(): void {
 		add_action( 'init', array( self::class, 'register' ) );
 		add_action( 'save_post_' . self::NAME, array( self::class, 'ensure_key' ), 5, 2 );
 	}
 
+	/**
+	 * Register the post type and its meta.
+	 */
 	public static function register(): void {
 		register_post_type(
 			self::NAME,
@@ -68,8 +77,10 @@ final class PostType {
 	}
 
 	/**
-	 * @param int      $post_id
-	 * @param \WP_Post $post
+	 * Give a shared tab its permanent key on first save.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post.
 	 */
 	public static function ensure_key( $post_id, $post ): void {
 		if ( wp_is_post_revision( $post_id ) || 'auto-draft' === $post->post_status ) {
@@ -81,17 +92,34 @@ final class PostType {
 		update_post_meta( $post_id, '_bulktab_key', self::unique_key( (string) $post->post_title, (int) $post_id ) );
 	}
 
+	/**
+	 * Unused key derived from a title ("size-guide", "size-guide-2", ...).
+	 *
+	 * @param string $title   Tab title.
+	 * @param int    $post_id Post the key is for (excluded from the check).
+	 * @return string
+	 */
 	public static function unique_key( string $title, int $post_id ): string {
-		$base = sanitize_title( $title );
-		$base = '' === $base ? 'tab-' . $post_id : substr( $base, 0, 60 );
+		// Keys must be plain [a-z0-9-] so they work in comma lists, CSV cells and CSS
+		// classes; non-Latin titles (percent-encoded by sanitize_title) fall back to tab-{id}.
+		$base = sanitize_title( remove_accents( $title ) );
+		$base = ( '' === $base || ! preg_match( '/^[a-z0-9-]+$/', $base ) ) ? 'tab-' . $post_id : substr( $base, 0, 60 );
 		$key  = $base;
 		$i    = 2;
 		while ( self::key_in_use( $key, $post_id ) ) {
-			$key = $base . '-' . $i++;
+			$key = $base . '-' . $i;
+			++$i;
 		}
 		return $key;
 	}
 
+	/**
+	 * Whether another shared tab already uses a key.
+	 *
+	 * @param string $key        Key.
+	 * @param int    $exclude_id Post to ignore.
+	 * @return bool
+	 */
 	private static function key_in_use( string $key, int $exclude_id ): bool {
 		$found = get_posts(
 			array(
@@ -100,8 +128,8 @@ final class PostType {
 				'fields'         => 'ids',
 				'posts_per_page' => 1,
 				'post__not_in'   => array( $exclude_id ),
-				'meta_key'       => '_bulktab_key', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
-				'meta_value'     => $key,         // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_value
+				'meta_key'       => '_bulktab_key', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- one-off lookup on save.
+				'meta_value'     => $key, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- one-off lookup on save.
 			)
 		);
 		return ! empty( $found );

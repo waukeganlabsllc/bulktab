@@ -14,15 +14,26 @@ use BulkTab\Rules;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Rules meta box on the shared-tab editor.
+ */
 final class RulesMetabox {
 
 	const NONCE = 'bulktab_rules_nonce';
 
+	/**
+	 * Register hooks.
+	 */
 	public static function register_hooks(): void {
 		add_action( 'add_meta_boxes_' . PostType::NAME, array( self::class, 'add' ) );
 		add_action( 'save_post_' . PostType::NAME, array( self::class, 'save' ), 10, 2 );
 	}
 
+	/**
+	 * Rule limits in force (Free limits unless Pro raises them).
+	 *
+	 * @return array
+	 */
 	public static function limits(): array {
 		/**
 		 * Rule limits for saving from the editor. Pro raises these.
@@ -32,11 +43,18 @@ final class RulesMetabox {
 		return (array) apply_filters( 'bulktab_rule_limits', Rules::free_limits() );
 	}
 
+	/**
+	 * Add the meta box.
+	 */
 	public static function add(): void {
 		add_meta_box( 'bulktab-rules', __( 'Show this tab on', 'bulktab' ), array( self::class, 'render' ), PostType::NAME, 'normal', 'high' );
 	}
 
-	/** @param \WP_Post $post */
+	/**
+	 * Print the meta box.
+	 *
+	 * @param \WP_Post $post Shared tab.
+	 */
 	public static function render( $post ): void {
 		wp_nonce_field( self::NONCE, self::NONCE );
 		$rules = Rules::parse( get_post_meta( $post->ID, '_bulktab_rules', true ) );
@@ -106,10 +124,12 @@ final class RulesMetabox {
 	}
 
 	/**
-	 * @param int      $post_id
-	 * @param \WP_Post $post
+	 * Save the rules (save_post_bulktab_tab).
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post (unused; part of the hook signature).
 	 */
-	public static function save( $post_id, $post ): void {
+	public static function save( $post_id, $post ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- hook signature.
 		if ( ! isset( $_POST[ self::NONCE ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ self::NONCE ] ) ), self::NONCE ) ) {
 			return;
 		}

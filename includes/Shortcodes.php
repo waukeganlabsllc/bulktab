@@ -11,17 +11,32 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * [bulktab_tabs] and [bulktab_tab] shortcodes.
+ */
 final class Shortcodes {
 
-	/** @var int Recursion guard (a tab containing [bulktab_tabs]). */
+	/**
+	 * Recursion guard (a tab containing [bulktab_tabs]).
+	 *
+	 * @var int
+	 */
 	private static $depth = 0;
 
+	/**
+	 * Register the shortcodes.
+	 */
 	public static function register_hooks(): void {
 		add_shortcode( 'bulktab_tabs', array( self::class, 'tabs' ) );
 		add_shortcode( 'bulktab_tab', array( self::class, 'tab' ) );
 	}
 
-	/** @param array|string $atts */
+	/**
+	 * [bulktab_tabs id=""]: every BulkTab tab of the product, stacked.
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 * @return string
+	 */
 	public static function tabs( $atts ): string {
 		$atts = shortcode_atts( array( 'id' => 0 ), $atts, 'bulktab_tabs' );
 		$id   = self::product_id( (int) $atts['id'] );
@@ -48,7 +63,12 @@ final class Shortcodes {
 		return $html . '</div>';
 	}
 
-	/** @param array|string $atts */
+	/**
+	 * [bulktab_tab key="" slot="" id=""]: one BulkTab tab's content.
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 * @return string
+	 */
 	public static function tab( $atts ): string {
 		$atts = shortcode_atts(
 			array(
@@ -76,6 +96,12 @@ final class Shortcodes {
 		return (string) ob_get_clean();
 	}
 
+	/**
+	 * The given product, else the current one; 0 when there is none.
+	 *
+	 * @param int $id Product ID from the attributes (0 = current).
+	 * @return int
+	 */
 	private static function product_id( int $id ): int {
 		if ( $id > 0 ) {
 			return 'product' === get_post_type( $id ) ? $id : 0;

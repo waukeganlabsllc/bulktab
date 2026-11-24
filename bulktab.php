@@ -13,8 +13,8 @@
  * License URI:          https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:          bulktab
  * Domain Path:          /languages
- * WC requires at least: 9.6
- * WC tested up to:      10.4
+ * WC requires at least: 11.1
+ * WC tested up to:      11.3
  *
  * @package BulkTab
  */

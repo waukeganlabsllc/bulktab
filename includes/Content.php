@@ -11,8 +11,18 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Renders and sanitizes tab content.
+ */
 final class Content {
 
+	/**
+	 * Render stored tab HTML for the storefront.
+	 *
+	 * @param string $html    Stored tab HTML.
+	 * @param array  $context array( 'ref' => string, 'product_id' => int ).
+	 * @return string
+	 */
 	public static function render( string $html, array $context = array() ): string {
 		if ( get_option( 'bulktab_use_the_content' ) ) {
 			$out = apply_filters( 'the_content', $html ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
@@ -42,7 +52,12 @@ final class Content {
 		return (string) apply_filters( 'bulktab_tab_content', $out, $html, $context );
 	}
 
-	/** Empty = no visible text and no media/shortcode/block. Empty tabs are not shown. */
+	/**
+	 * Empty = no visible text and no media/shortcode/block. Empty tabs are not shown.
+	 *
+	 * @param string $html Tab HTML.
+	 * @return bool
+	 */
 	public static function is_empty( string $html ): bool {
 		if ( '' === trim( $html ) ) {
 			return true;
@@ -53,7 +68,12 @@ final class Content {
 		return '' === trim( html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES ), " \t\n\r\0\x0B\xC2\xA0" );
 	}
 
-	/** Sanitise editor input for storage, respecting unfiltered_html. */
+	/**
+	 * Sanitize editor input for storage, respecting unfiltered_html.
+	 *
+	 * @param string $html Submitted HTML (unslashed).
+	 * @return string
+	 */
 	public static function sanitize_for_storage( string $html ): string {
 		return current_user_can( 'unfiltered_html' ) ? $html : wp_kses_post( $html );
 	}

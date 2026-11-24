@@ -13,22 +13,40 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Storefront tabs.
+ */
 final class Renderer {
 
-	/** @var TabStore */
+	/**
+	 * Tab storage.
+	 *
+	 * @var TabStore
+	 */
 	private $store;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param MetaStore $meta Meta storage.
+	 */
 	public function __construct( MetaStore $meta ) {
 		$this->store = new TabStore( $meta );
 	}
 
+	/**
+	 * Register the `woocommerce_product_tabs` filters.
+	 */
 	public function register_hooks(): void {
 		add_filter( 'woocommerce_product_tabs', array( $this, 'add_tabs' ), 20 );
 		add_filter( 'woocommerce_product_tabs', array( $this, 'apply_layout' ), 98 );
 	}
 
 	/**
-	 * @param array $tabs
+	 * Add the current product's BulkTab tabs (priority 20).
+	 *
+	 * @param array $tabs WooCommerce tabs.
+	 * @return array
 	 */
 	public function add_tabs( $tabs ): array {
 		$tabs    = is_array( $tabs ) ? $tabs : array();
@@ -39,7 +57,12 @@ final class Renderer {
 		return $tabs + $this->build_tabs( $product->get_id() );
 	}
 
-	/** All BulkTab tabs for a product, in WooCommerce tab format. */
+	/**
+	 * All BulkTab tabs for a product, in WooCommerce tab format.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array
+	 */
 	public function build_tabs( int $product_id ): array {
 		$out      = array();
 		$attached = $this->store->get_list( $product_id, '_bulktab_attach' );
@@ -53,9 +76,9 @@ final class Renderer {
 				continue;
 			}
 			$out[ 'bulktab_s_' . $key ] = array(
-				'title'         => $post->post_title,
-				'priority'      => (int) $index[ $key ]['priority'],
-				'callback'      => array( $this, 'panel' ),
+				'title'           => $post->post_title,
+				'priority'        => (int) $index[ $key ]['priority'],
+				'callback'        => array( $this, 'panel' ),
 				'bulktab_ref'     => 's:' . $key,
 				'bulktab_content' => (string) $post->post_content,
 				'bulktab_product' => $product_id,
@@ -67,9 +90,9 @@ final class Renderer {
 				continue;
 			}
 			$out[ 'bulktab_c_' . $slot ] = array(
-				'title'         => '' !== $tab['title'] ? $tab['title'] : __( 'More info', 'bulktab' ),
-				'priority'      => 40 + $slot,
-				'callback'      => array( $this, 'panel' ),
+				'title'           => '' !== $tab['title'] ? $tab['title'] : __( 'More info', 'bulktab' ),
+				'priority'        => 40 + $slot,
+				'callback'        => array( $this, 'panel' ),
 				'bulktab_ref'     => 'c:' . $slot,
 				'bulktab_content' => $tab['content'],
 				'bulktab_product' => $product_id,
@@ -86,7 +109,10 @@ final class Renderer {
 	}
 
 	/**
-	 * @param array $tabs
+	 * Apply the global layout, then the product's own hide / order (priority 98).
+	 *
+	 * @param array $tabs WooCommerce tabs.
+	 * @return array
 	 */
 	public function apply_layout( $tabs ): array {
 		$tabs    = is_array( $tabs ) ? $tabs : array();
@@ -108,8 +134,8 @@ final class Renderer {
 	/**
 	 * Tab panel callback (WooCommerce passes key + tab array).
 	 *
-	 * @param string $key
-	 * @param array  $tab
+	 * @param string $key Tab key.
+	 * @param array  $tab Tab array.
 	 */
 	public function panel( $key, $tab ): void {
 		$title = isset( $tab['title'] ) ? (string) $tab['title'] : '';
@@ -128,7 +154,11 @@ final class Renderer {
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
-	/** @return \WC_Product|null */
+	/**
+	 * Product of the current page or loop.
+	 *
+	 * @return \WC_Product|null
+	 */
 	private function current_product() {
 		global $product;
 		if ( $product instanceof \WC_Product ) {

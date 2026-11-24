@@ -11,10 +11,16 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Compiled index of shared tabs and their rules.
+ */
 final class RulesIndex {
 
 	const OPTION = 'bulktab_rules_index';
 
+	/**
+	 * Rebuild the index whenever a shared tab is saved, trashed, restored or deleted.
+	 */
 	public static function register_hooks(): void {
 		// Priority 20: after RulesMetabox saves rules (10).
 		add_action( 'save_post_' . PostType::NAME, array( self::class, 'rebuild' ), 20 );
@@ -23,13 +29,20 @@ final class RulesIndex {
 		add_action( 'untrashed_post', array( self::class, 'maybe_rebuild' ) );
 	}
 
-	/** @param int $post_id */
+	/**
+	 * Rebuild when the changed post is a shared tab.
+	 *
+	 * @param int $post_id Post ID.
+	 */
 	public static function maybe_rebuild( $post_id ): void {
 		if ( PostType::NAME === get_post_type( $post_id ) ) {
 			self::rebuild();
 		}
 	}
 
+	/**
+	 * Rebuild the index from all published shared tabs.
+	 */
 	public static function rebuild(): void {
 		$ids   = get_posts(
 			array(
@@ -60,6 +73,11 @@ final class RulesIndex {
 		update_option( self::OPTION, $index, true );
 	}
 
+	/**
+	 * The index (built on first use).
+	 *
+	 * @return array<string, array{post_id: int, priority: int, rules: array}>
+	 */
 	public static function get(): array {
 		$index = get_option( self::OPTION, null );
 		if ( ! is_array( $index ) ) {

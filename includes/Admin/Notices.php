@@ -10,12 +10,24 @@ namespace BulkTab\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Per-user queue of admin notices.
+ */
 final class Notices {
 
+	/**
+	 * Register hooks.
+	 */
 	public static function register_hooks(): void {
 		add_action( 'admin_notices', array( self::class, 'render' ) );
 	}
 
+	/**
+	 * Queue a notice for the current user's next admin page.
+	 *
+	 * @param string $message Plain-text message.
+	 * @param string $type    error|warning|success|info.
+	 */
 	public static function add( string $message, string $type = 'error' ): void {
 		$key   = 'bulktab_notices_' . get_current_user_id();
 		$queue = get_transient( $key );
@@ -28,6 +40,9 @@ final class Notices {
 		set_transient( $key, $queue, 10 * MINUTE_IN_SECONDS );
 	}
 
+	/**
+	 * Print and clear the current user's queued notices.
+	 */
 	public static function render(): void {
 		$key   = 'bulktab_notices_' . get_current_user_id();
 		$queue = get_transient( $key );

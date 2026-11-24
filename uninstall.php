@@ -15,6 +15,10 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 function bulktab_uninstall_site() {
 	global $wpdb;
 
+	// Scheduled jobs and per-user notice dismissals are always removed; tab data only on opt-in.
+	wp_clear_scheduled_hook( 'bulktab_health_scan' );
+	delete_metadata( 'user', 0, 'bulktab_dismissed_notices', '', true );
+
 	if ( ! get_option( 'bulktab_delete_data_on_uninstall' ) ) {
 		return;
 	}

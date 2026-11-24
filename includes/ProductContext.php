@@ -11,11 +11,24 @@ namespace BulkTab;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Per-request cache of product contexts for TabMatcher.
+ */
 final class ProductContext {
 
-	/** @var array<int, array> */
+	/**
+	 * Contexts by product ID.
+	 *
+	 * @var array<int, array>
+	 */
 	private static $cache = array();
 
+	/**
+	 * Context for TabMatcher: array( 'id' => int, 'terms' => array( taxonomy => int[] ) ).
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array
+	 */
 	public static function for_product( int $product_id ): array {
 		if ( isset( self::$cache[ $product_id ] ) ) {
 			return self::$cache[ $product_id ];
@@ -47,6 +60,9 @@ final class ProductContext {
 		return $ctx;
 	}
 
+	/**
+	 * Clear the per-request cache.
+	 */
 	public static function flush(): void {
 		self::$cache = array();
 	}

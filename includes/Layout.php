@@ -61,7 +61,7 @@ final class Layout {
 					continue;
 				}
 				if ( isset( $g['title'] ) && '' !== trim( (string) $g['title'] ) ) {
-					$tab['title'] = (string) $g['title'];
+					$tab['title'] = self::renamed_title( (string) ( $tab['title'] ?? '' ), (string) $g['title'] );
 				}
 				if ( isset( $g['priority'] ) && is_numeric( $g['priority'] ) ) {
 					$tab['priority'] = (int) $g['priority'];
@@ -99,6 +99,25 @@ final class Layout {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Keep a trailing count like "Reviews (3)" when a tab is renamed.
+	 * "{count}" in the new title places the number explicitly.
+	 *
+	 * @param string $original Title WooCommerce generated.
+	 * @param string $renamed  Title chosen by the store.
+	 * @return string
+	 */
+	public static function renamed_title( string $original, string $renamed ): string {
+		$count = preg_match( '/\((\d+)\)\s*$/', $original, $m ) ? $m[1] : null;
+		if ( false !== strpos( $renamed, '{count}' ) ) {
+			return trim( str_replace( '{count}', null === $count ? '' : $count, $renamed ) );
+		}
+		if ( null !== $count && ! preg_match( '/\(\d+\)\s*$/', $renamed ) ) {
+			return $renamed . ' (' . $count . ')';
+		}
+		return $renamed;
 	}
 
 	/**
