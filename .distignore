@@ -1,0 +1,35 @@
+# Files and folders NOT shipped in the release zip.
+# Read by bin/build.php and by 10up/action-wordpress-plugin-deploy.
+# One entry per line; a trailing "/" is optional; "*" globs are allowed.
+/.git
+/.github
+/.wordpress-org
+/.distignore
+/.gitignore
+/.gitattributes
+/.editorconfig
+/.wp-env.json
+/.wp-env.override.json
+/.phpunit.result.cache
+/bin
+/build
+/docs
+/node_modules
+/tests
+/vendor
+/composer.json
+/composer.lock
+/package.json
+/package-lock.json
+/phpcs.xml
+/phpcs.xml.dist
+/.phpcs.xml.dist
+/phpunit.xml
+/phpunit.xml.dist
+/playwright.config.js
+/playwright.config.ts
+/test-results
+/playwright-report
+*.md
+*.zip
+.DS_Store

@@ -1,0 +1,20 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build output (bin/build.php)
+/build/
+*.zip
+
+# Tooling caches
+.phpunit.result.cache
+.phpunit.cache/
+.phpcs-cache
+/test-results/
+/playwright-report/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,86 @@
+name: Deploy to WordPress.org
+
+# Pushing a tag vX.Y.Z builds the release flavor for vars.WPORG_SLUG
+# (Path A: yikes-inc-easy-custom-woocommerce-product-tabs, Path B: our own slug),
+# commits it to the plugin's SVN repository and attaches the zip to a GitHub release.
+#
+# Repository settings needed:
+#   vars.WPORG_SLUG                         WordPress.org plugin slug
+#   secrets.SVN_USERNAME / SVN_PASSWORD     wp.org username + SVN password (account settings)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    environment: wordpress-org
+    env:
+      SLUG: ${{ vars.WPORG_SLUG }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Check slug and versions
+        run: |
+          set -euo pipefail
+          test -n "$SLUG" || { echo "::error::Set the WPORG_SLUG repository variable."; exit 1; }
+          TAG="${GITHUB_REF_NAME#v}"
+          HEADER=$(sed -n 's/^[ *]*Version:[[:space:]]*//p' bulktab.php | head -1 | tr -d '[:space:]')
+          CONST=$(sed -n "s/.*define( 'BULKTAB_VERSION', '\([^']*\)'.*/\1/p" bulktab.php | head -1)
+          STABLE=$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | head -1 | tr -d '[:space:]')
+          echo "tag=$TAG header=$HEADER constant=$CONST stable=$STABLE"
+          [ "$TAG" = "$HEADER" ] && [ "$TAG" = "$CONST" ] || { echo "::error::Tag, Version header and BULKTAB_VERSION differ."; exit 1; }
+          # A beta tag (e.g. Path A 2.0.0 while Stable tag stays 1.8.6) is allowed; just warn.
+          [ "$TAG" = "$STABLE" ] || echo "::warning::Stable tag ($STABLE) is not this tag ($TAG); WordPress.org users will not be offered it."
+
+      - name: Build
+        run: php bin/build.php --slug="$SLUG"
+
+      - name: Point the Playground blueprint at the release slug
+        run: |
+          php -r '
+            $f  = ".wordpress-org/blueprints/blueprint.json";
+            $bp = json_decode( file_get_contents( $f ), true );
+            foreach ( $bp["steps"] as &$s ) {
+              if ( "installPlugin" === $s["step"] && "bulktab" === ( $s["pluginData"]["slug"] ?? "" ) ) {
+                $s["pluginData"]["slug"] = getenv( "SLUG" );
+              }
+            }
+            file_put_contents( $f, json_encode( $bp, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "\n" );
+          '
+
+      - name: Deploy to WordPress.org SVN
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: ${{ vars.WPORG_SLUG }}
+          BUILD_DIR: build/${{ vars.WPORG_SLUG }}
+          ASSETS_DIR: .wordpress-org
+
+      - name: Attach zip to GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "build/$SLUG.zip" --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" "build/$SLUG.zip" --title "$GITHUB_REF_NAME" --generate-notes
+          fi

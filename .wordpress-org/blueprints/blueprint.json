@@ -1,0 +1,61 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+        "title": "BulkTab – Bulk Product Tabs for WooCommerce demo",
+        "description": "WooCommerce with a sample product that shows a shared tab and a product tab.",
+        "author": "Waukegan Labs LLC",
+        "categories": [
+            "WooCommerce"
+        ]
+    },
+    "landingPage": "/?product=organic-cotton-t-shirt",
+    "preferredVersions": {
+        "php": "8.3",
+        "wp": "latest"
+    },
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "login",
+            "username": "admin",
+            "password": "password"
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "wordpress.org/plugins",
+                "slug": "woocommerce"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "wordpress.org/plugins",
+                "slug": "bulktab"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "setSiteOptions",
+            "options": {
+                "woocommerce_coming_soon": "no",
+                "woocommerce_store_pages_only": "no",
+                "woocommerce_onboarding_profile": {
+                    "skipped": true
+                },
+                "woocommerce_currency": "USD"
+            }
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php\nrequire '/wordpress/wp-load.php';\n\n$product = new WC_Product_Simple();\n$product->set_name( 'Organic Cotton T-Shirt' );\n$product->set_slug( 'organic-cotton-t-shirt' );\n$product->set_status( 'publish' );\n$product->set_regular_price( '24.00' );\n$product->set_short_description( 'A soft everyday tee. Scroll down to see the product tabs.' );\n$product->set_description( '<p>Made from 100% organic cotton. This is the standard WooCommerce Description tab.</p>' );\n$product->set_weight( '0.2' );\n$product_id = $product->save();\n\nupdate_post_meta( $product_id, '_bulktab_1_title', 'Care instructions' );\nupdate_post_meta( $product_id, '_bulktab_1_content', '<ul><li>Machine wash cold</li><li>Do not tumble dry</li></ul><p>This tab belongs to this product only.</p>' );\n\nwp_insert_post(\n\tarray(\n\t\t'post_type'    => 'bulktab_tab',\n\t\t'post_status'  => 'publish',\n\t\t'post_title'   => 'Shipping & returns',\n\t\t'post_content' => '<p>Free shipping on orders over $50. Returns accepted within 30 days.</p><p>This is a <strong>shared tab</strong>: it is written once and shown on every product.</p>',\n\t\t'meta_input'   => array(\n\t\t\t'_bulktab_key'   => 'shipping-returns',\n\t\t\t'_bulktab_rules' => wp_json_encode( array( 'v' => 1, 'all' => true, 'groups' => array(), 'include' => array(), 'exclude' => array() ) ),\n\t\t),\n\t)\n);\n\nif ( class_exists( '\\BulkTab\\RulesIndex' ) ) {\n\t\\BulkTab\\RulesIndex::rebuild();\n} else {\n\tdelete_option( 'bulktab_rules_index' );\n}\n"
+        }
+    ]
+}

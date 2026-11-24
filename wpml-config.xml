@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  WPML / Polylang language configuration for BulkTab.
+  Slot fields (_bulktab_N_*) are listed explicitly for N = 1..20 because
+  wildcard support for custom-fields is not verified in WPML and Polylang.
+  Keep in sync with TabStore::MAX_TABS.
+-->
+<wpml-config>
+	<custom-types>
+		<custom-type translate="1" display-as-translated="1">bulktab_tab</custom-type>
+	</custom-types>
+	<custom-fields>
+		<custom-field action="translate">_bulktab_1_title</custom-field>
+		<custom-field action="translate">_bulktab_1_content</custom-field>
+		<custom-field action="ignore">_bulktab_1_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_2_title</custom-field>
+		<custom-field action="translate">_bulktab_2_content</custom-field>
+		<custom-field action="ignore">_bulktab_2_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_3_title</custom-field>
+		<custom-field action="translate">_bulktab_3_content</custom-field>
+		<custom-field action="ignore">_bulktab_3_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_4_title</custom-field>
+		<custom-field action="translate">_bulktab_4_content</custom-field>
+		<custom-field action="ignore">_bulktab_4_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_5_title</custom-field>
+		<custom-field action="translate">_bulktab_5_content</custom-field>
+		<custom-field action="ignore">_bulktab_5_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_6_title</custom-field>
+		<custom-field action="translate">_bulktab_6_content</custom-field>
+		<custom-field action="ignore">_bulktab_6_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_7_title</custom-field>
+		<custom-field action="translate">_bulktab_7_content</custom-field>
+		<custom-field action="ignore">_bulktab_7_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_8_title</custom-field>
+		<custom-field action="translate">_bulktab_8_content</custom-field>
+		<custom-field action="ignore">_bulktab_8_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_9_title</custom-field>
+		<custom-field action="translate">_bulktab_9_content</custom-field>
+		<custom-field action="ignore">_bulktab_9_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_10_title</custom-field>
+		<custom-field action="translate">_bulktab_10_content</custom-field>
+		<custom-field action="ignore">_bulktab_10_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_11_title</custom-field>
+		<custom-field action="translate">_bulktab_11_content</custom-field>
+		<custom-field action="ignore">_bulktab_11_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_12_title</custom-field>
+		<custom-field action="translate">_bulktab_12_content</custom-field>
+		<custom-field action="ignore">_bulktab_12_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_13_title</custom-field>
+		<custom-field action="translate">_bulktab_13_content</custom-field>
+		<custom-field action="ignore">_bulktab_13_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_14_title</custom-field>
+		<custom-field action="translate">_bulktab_14_content</custom-field>
+		<custom-field action="ignore">_bulktab_14_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_15_title</custom-field>
+		<custom-field action="translate">_bulktab_15_content</custom-field>
+		<custom-field action="ignore">_bulktab_15_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_16_title</custom-field>
+		<custom-field action="translate">_bulktab_16_content</custom-field>
+		<custom-field action="ignore">_bulktab_16_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_17_title</custom-field>
+		<custom-field action="translate">_bulktab_17_content</custom-field>
+		<custom-field action="ignore">_bulktab_17_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_18_title</custom-field>
+		<custom-field action="translate">_bulktab_18_content</custom-field>
+		<custom-field action="ignore">_bulktab_18_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_19_title</custom-field>
+		<custom-field action="translate">_bulktab_19_content</custom-field>
+		<custom-field action="ignore">_bulktab_19_content_prev</custom-field>
+		<custom-field action="translate">_bulktab_20_title</custom-field>
+		<custom-field action="translate">_bulktab_20_content</custom-field>
+		<custom-field action="ignore">_bulktab_20_content_prev</custom-field>
+		<custom-field action="copy">_bulktab_attach</custom-field>
+		<custom-field action="copy">_bulktab_order</custom-field>
+		<custom-field action="copy">_bulktab_hide</custom-field>
+		<custom-field action="copy">_bulktab_key</custom-field>
+		<custom-field action="copy">_bulktab_rules</custom-field>
+	</custom-fields>
+	<admin-texts>
+		<key name="bulktab_layout">
+			<key name="description">
+				<key name="title" />
+			</key>
+			<key name="additional_information">
+				<key name="title" />
+			</key>
+			<key name="reviews">
+				<key name="title" />
+			</key>
+		</key>
+	</admin-texts>
+</wpml-config>

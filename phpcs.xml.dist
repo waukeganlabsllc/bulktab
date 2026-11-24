@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<ruleset name="BulkTab">
+	<description>Coding standards for the BulkTab plugin.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/build/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+	<arg name="parallel" value="8"/>
+	<arg name="basepath" value="."/>
+
+	<config name="testVersion" value="7.4-"/>
+	<config name="minimum_wp_version" value="6.8"/>
+
+	<rule ref="WordPress">
+		<!-- Classes follow the PSR-4 autoload convention (includes/<Sub>/<Class>.php), see includes/autoload.php. -->
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+	</rule>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="bulktab"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- WooCommerce capabilities. -->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="manage_woocommerce"/>
+				<element value="edit_product"/>
+				<element value="edit_products"/>
+				<element value="edit_others_products"/>
+				<element value="publish_products"/>
+				<element value="read_product"/>
+				<element value="delete_product"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="bulktab"/>
+				<element value="BulkTab"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

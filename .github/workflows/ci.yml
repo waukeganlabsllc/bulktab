@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpcs:
+    name: PHPCS (WPCS 3 + PHPCompatibilityWP)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: PHPCS
+        run: vendor/bin/phpcs
+
+  unit:
+    name: PHPUnit (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.1', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Unit tests
+        run: vendor/bin/phpunit --testsuite unit
+
+  plugin-check:
+    name: Plugin Check
+    runs-on: ubuntu-latest
+    env:
+      # Path B slug; falls back to the working slug until the repo variable is set.
+      SLUG: ${{ vars.WPORG_SLUG || 'bulktab' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Build release copy
+        run: php bin/build.php --slug="$SLUG" --no-zip
+
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: ./build/${{ env.SLUG }}
+          slug: ${{ env.SLUG }}
+
+  # TODO(integration): wp-env + WordPress test suite with WooCommerce.
+  #   - uses: actions/setup-node@v4 (node 22), npm i -g @wordpress/env
+  #   - wp-env start (uses .wp-env.json: latest WordPress, WooCommerce latest-stable, PHP 8.3)
+  #   - wp-env run tests-cli --env-cwd=wp-content/plugins/bulktab vendor/bin/phpunit --testsuite integration
+  #   - pairwise matrix: PHP 7.4/8.1/8.3/8.4 x WordPress floor(6.8)/latest/trunk x WooCommerce floor/latest/beta
+  #     (override "core" / plugin zip URLs via .wp-env.override.json per matrix cell)
+  #
+  # TODO(e2e): Playwright smoke tests against wp-env.
+  #   - admin save of a product tab, front-end render, CSV export/import round-trip
+  #   - npx playwright install --with-deps chromium && npx playwright test
+  #   - upload playwright-report/ as an artifact on failure

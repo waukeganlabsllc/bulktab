@@ -1,0 +1,33 @@
+{
+	"name": "waukeganlabs/bulktab",
+	"description": "Product tabs for large WooCommerce catalogs.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9.6",
+		"wp-coding-standards/wpcs": "^3",
+		"phpcompatibility/phpcompatibility-wp": "*",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"BulkTab\\Tests\\Unit\\": "tests/unit/"
+		}
+	},
+	"config": {
+		"platform": {
+			"php": "7.4.33"
+		},
+		"sort-packages": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"scripts": {
+		"test": "phpunit --testsuite unit",
+		"lint": "phpcs"
+	}
+}

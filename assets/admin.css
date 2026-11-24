@@ -1,0 +1,130 @@
+/* BulkTab admin: product "Tabs" panel. */
+
+#woocommerce-product-data ul.wc-tabs li.bulktab_options a::before {
+	content: "\f163"; /* dashicons-index-card */
+}
+
+.bulktab-panel {
+	padding: 0 12px 12px;
+}
+
+.bulktab-panel .bulktab-section {
+	border-bottom: 1px solid #eee;
+	padding: 4px 0 12px;
+}
+
+.bulktab-panel .bulktab-section:last-of-type {
+	border-bottom: 0;
+}
+
+.bulktab-panel h3 {
+	margin: 12px 0 8px;
+	font-size: 14px;
+}
+
+.bulktab-panel h4 {
+	margin: 12px 0 6px;
+}
+
+.bulktab-panel .bulktab-field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+/* Shared tabs */
+.bulktab-shared-table td,
+.bulktab-shared-table th {
+	vertical-align: middle;
+}
+
+.bulktab-badge {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 10px;
+	font-size: 12px;
+	line-height: 1.8;
+}
+
+.bulktab-badge-on {
+	background: #edfaef;
+	color: #00632a;
+}
+
+.bulktab-badge-off {
+	background: #f0f0f1;
+	color: #50575e;
+}
+
+/* Own tabs */
+.bulktab-tab,
+.bulktab-new-row {
+	border: 1px solid #dcdcde;
+	background: #fff;
+	padding: 4px 12px 8px;
+	margin: 0 0 12px;
+}
+
+.bulktab-tab-actions label {
+	margin-right: 16px;
+}
+
+.bulktab-tab-actions .bulktab-delete {
+	color: #b32d2e;
+}
+
+.bulktab-tab-actions .bulktab-ref {
+	color: #646970;
+	float: right;
+}
+
+/* Tab order */
+.bulktab-order-list {
+	margin: 8px 0;
+	max-width: 600px;
+}
+
+.bulktab-order-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	margin: 0 0 4px;
+	padding: 6px 8px;
+}
+
+.bulktab-order-item.is-hidden .bulktab-order-label {
+	color: #8c8f94;
+	text-decoration: line-through;
+}
+
+.bulktab-order-item .bulktab-handle {
+	cursor: move;
+	color: #8c8f94;
+}
+
+.bulktab-order-label {
+	flex: 1 1 auto;
+}
+
+.bulktab-order-type {
+	color: #646970;
+	font-size: 12px;
+}
+
+.bulktab-order-buttons .button-link {
+	color: #50575e;
+	text-decoration: none;
+}
+
+.bulktab-order-placeholder {
+	border: 1px dashed #8c8f94;
+	height: 32px;
+	margin: 0 0 4px;
+}
+
+.bulktab-order-status {
+	margin-left: 8px;
+	color: #646970;
+}
