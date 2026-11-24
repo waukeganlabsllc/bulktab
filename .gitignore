@@ -18,3 +18,11 @@
 Thumbs.db
 .idea/
 .vscode/
+
+# Never commit secrets (Freemius secret key, SVN/API credentials, local configs)
+.env
+.env.*
+wp-config.php
+*.pem
+*.key
+auth.json

@@ -24,7 +24,7 @@ MOUNTS=(--mount="$FREE:/wordpress/wp-content/plugins/bulktab" --mount="$OUT:/smo
 if [ -n "$PRO" ]; then
 	MOUNTS+=(--mount="$PRO:/wordpress/wp-content/plugins/bulktab-pro")
 	BLUEPRINT="$PRO/tests/smoke/blueprint.json"
-	MOUNTS+=(--define-bool BULKTAB_PRO_DEV true)
+	MOUNTS+=(--define-bool BULKTAB_PRO_DEV true --define WP_ENVIRONMENT_TYPE local)
 fi
 
 "$TOOLS/node_modules/.bin/wp-playground-cli" server --port="$PORT" --php=8.3 "${MOUNTS[@]}" \
