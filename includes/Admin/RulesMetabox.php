@@ -170,7 +170,10 @@ final class RulesMetabox {
 
 		$errors = array();
 		$rules  = Rules::parse( $raw, $errors );
-		$errors = array_merge( $errors, Rules::check_limits( $rules, self::limits() ) );
+		// Validity only (no feature limits): any rule the engine can evaluate may be saved.
+		if ( $rules['all'] && $rules['groups'] ) {
+			$errors[] = 'all_with_groups';
+		}
 		if ( $errors ) {
 			Notices::add(
 				/* translators: %s: error codes */
