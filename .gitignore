@@ -26,3 +26,7 @@ wp-config.php
 *.pem
 *.key
 auth.json
+
+# Site build output
+/site/dist/
+/site/node_modules/

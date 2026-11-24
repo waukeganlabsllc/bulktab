@@ -116,7 +116,7 @@ final class ProductPanel {
 		$index    = RulesIndex::get();
 		$ctx      = ProductContext::for_product( $product_id );
 		?>
-		<div id="<?php echo esc_attr( self::TARGET ); ?>" class="panel bulktab-panel hidden">
+		<div id="<?php echo esc_attr( self::TARGET ); ?>" class="panel woocommerce_options_panel bulktab-panel hidden">
 			<?php wp_nonce_field( self::NONCE, self::NONCE ); ?>
 
 			<?php $this->render_shared( $index, $ctx, $attached, $hidden ); ?>
