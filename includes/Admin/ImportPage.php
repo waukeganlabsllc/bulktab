@@ -47,7 +47,7 @@ final class ImportPage {
 		$hook = add_submenu_page(
 			'edit.php?post_type=product',
 			__( 'Import from Custom Product Tabs', 'bulktab' ),
-			__( 'Import from Custom Product Tabs', 'bulktab' ),
+			__( 'Import tabs', 'bulktab' ),
 			self::CAP,
 			self::SLUG,
 			array( self::class, 'render' )
