@@ -2,7 +2,7 @@
 /**
  * Decides which shared tabs show on a product. Pure PHP.
  *
- * Precedence (spec): per-product hide -> rule exclude -> attached / include / matched.
+ * Precedence: per-product hide -> attached on the product -> the tab's rule.
  *
  * Product context:
  *   array( 'id' => 123, 'terms' => array( 'product_cat' => [ids incl. ancestors], ... ) )
@@ -18,74 +18,62 @@ namespace BulkTab;
 final class TabMatcher {
 
 	/**
-	 * Whether parsed rules select the product (exclude, then include, then all/groups).
+	 * Whether a parsed rule selects the product.
 	 *
-	 * @param array $rules Parsed rules.
+	 * @param array $rules Parsed rule (see Rules).
 	 * @param array $ctx   Product context.
 	 * @return bool
 	 */
 	public static function matches( array $rules, array $ctx ): bool {
-		$id = (int) ( $ctx['id'] ?? 0 );
-		if ( in_array( $id, $rules['exclude'], true ) ) {
+		if ( ! empty( $rules['all'] ) ) {
+			return true;
+		}
+		if ( empty( $rules['terms'] ) || empty( $rules['tax'] ) ) {
 			return false;
 		}
-		if ( in_array( $id, $rules['include'], true ) ) {
-			return true;
-		}
-		if ( $rules['all'] ) {
-			return true;
-		}
-		foreach ( $rules['groups'] as $group ) {
-			if ( self::group_matches( $group, $ctx ) ) {
-				return true;
-			}
-		}
-		return false;
+		$product_terms = $ctx['terms'][ $rules['tax'] ] ?? array();
+		return (bool) array_intersect( $rules['terms'], $product_terms );
 	}
 
 	/**
-	 * Whether every condition of an AND-group holds.
+	 * Whether one shared tab shows on the product.
 	 *
-	 * @param array $group Conditions.
-	 * @param array $ctx   Product context.
+	 * @param string        $key      Shared-tab key.
+	 * @param array         $entry    Index entry (array( 'rules' => parsed rule, ... )).
+	 * @param array         $ctx      Product context.
+	 * @param bool          $attached Attached on this product.
+	 * @param callable|null $decide   Optional callback( $key, $entry, $ctx, $attached ): ?bool from add-ons;
+	 *                                null keeps the default decision.
 	 * @return bool
 	 */
-	private static function group_matches( array $group, array $ctx ): bool {
-		if ( array() === $group ) {
-			return false; // An empty AND is vacuously true; never let it match every product.
-		}
-		foreach ( $group as $cond ) {
-			$product_terms = $ctx['terms'][ $cond['tax'] ] ?? array();
-			$has_any       = (bool) array_intersect( $cond['terms'], $product_terms );
-			if ( $has_any === $cond['not'] ) {
-				return false;
+	public static function shows( string $key, array $entry, array $ctx, bool $attached, ?callable $decide = null ): bool {
+		if ( null !== $decide ) {
+			$result = $decide( $key, $entry, $ctx, $attached );
+			if ( is_bool( $result ) ) {
+				return $result;
 			}
 		}
-		return true;
+		return $attached || ( isset( $entry['rules'] ) && is_array( $entry['rules'] ) && self::matches( $entry['rules'], $ctx ) );
 	}
 
 	/**
 	 * Shared-tab keys to show on a product.
 	 *
-	 * @param array    $index    Compiled index: key => array( 'rules' => parsed rules, ... ), in display order.
-	 * @param array    $ctx      Product context.
-	 * @param string[] $attached Shared-tab keys attached on this product.
-	 * @param string[] $hidden   Refs hidden on this product, e.g. 's:size-guide'.
+	 * @param array         $index    Compiled index: key => array( 'rules' => parsed rule, ... ), in display order.
+	 * @param array         $ctx      Product context.
+	 * @param string[]      $attached Shared-tab keys attached on this product.
+	 * @param string[]      $hidden   Refs hidden on this product, e.g. 's:size-guide'.
+	 * @param callable|null $decide   See shows().
 	 * @return string[] Keys to show, in index order.
 	 */
-	public static function resolve( array $index, array $ctx, array $attached, array $hidden ): array {
-		$id   = (int) ( $ctx['id'] ?? 0 );
+	public static function resolve( array $index, array $ctx, array $attached, array $hidden, ?callable $decide = null ): array {
 		$show = array();
 		foreach ( $index as $key => $entry ) {
 			$key = (string) $key;
 			if ( in_array( 's:' . $key, $hidden, true ) ) {
 				continue;
 			}
-			$rules = $entry['rules'];
-			if ( in_array( $id, $rules['exclude'], true ) ) {
-				continue;
-			}
-			if ( in_array( $key, $attached, true ) || self::matches( $rules, $ctx ) ) {
+			if ( self::shows( $key, is_array( $entry ) ? $entry : array(), $ctx, in_array( $key, $attached, true ), $decide ) ) {
 				$show[] = $key;
 			}
 		}

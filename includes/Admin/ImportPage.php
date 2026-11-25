@@ -255,13 +255,19 @@ final class ImportPage {
 		echo '<h3>' . esc_html__( 'Details', 'bulktab' ) . '</h3>';
 		echo '<table class="widefat striped"><thead><tr><th>' . esc_html__( 'Product', 'bulktab' ) . '</th><th>' . esc_html__( 'What happened', 'bulktab' ) . '</th><th>' . esc_html__( 'Detail', 'bulktab' ) . '</th></tr></thead><tbody>';
 		foreach ( $issues as $issue ) {
-			$product = '&mdash;';
+			echo '<tr><td>';
 			if ( $issue['product_id'] ) {
-				$label   = '' !== $issue['title'] ? $issue['title'] : '#' . $issue['product_id'];
-				$link    = get_edit_post_link( (int) $issue['product_id'] );
-				$product = $link ? '<a href="' . esc_url( $link ) . '">' . esc_html( $label ) . '</a>' : esc_html( $label );
+				$label = '' !== $issue['title'] ? $issue['title'] : '#' . $issue['product_id'];
+				$link  = get_edit_post_link( (int) $issue['product_id'] );
+				if ( $link ) {
+					echo '<a href="' . esc_url( $link ) . '">' . esc_html( $label ) . '</a>';
+				} else {
+					echo esc_html( $label );
+				}
+			} else {
+				echo '&mdash;';
 			}
-			echo '<tr><td>' . $product . '</td><td>' . esc_html( self::issue_label( $issue['code'] ) ) . '</td><td><code>' . esc_html( $issue['detail'] ) . '</code></td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $product is escaped above.
+			echo '</td><td>' . esc_html( self::issue_label( $issue['code'] ) ) . '</td><td><code>' . esc_html( $issue['detail'] ) . '</code></td></tr>';
 		}
 		echo '</tbody></table>';
 		if ( $report->dropped() ) {

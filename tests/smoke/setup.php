@@ -46,13 +46,13 @@ $shared = static function ( $title, $content, $rules ) {
 	return $id;
 };
 
-$none = array( 'v' => 1, 'all' => false, 'groups' => array(), 'include' => array(), 'exclude' => array() );
+$none = BulkTab\Rules::empty_rules();
 
 // Shoes (parent category) -> must reach Boots via ancestors.
 $out['size_guide'] = $shared(
 	'Size guide',
 	'<table><tr><td>EU 42</td><td>US 9</td></tr></table>',
-	array_merge( $none, array( 'groups' => array( array( array( 'tax' => 'product_cat', 'terms' => array( $shoes['term_id'] ), 'not' => false ) ) ) ) )
+	BulkTab\Rules::for_terms( 'product_cat', array( $shoes['term_id'] ) )
 );
 $out['shipping']   = $shared( 'Shipping', 'Ships in 3 days.', array_merge( $none, array( 'all' => true ) ) );
 // R-14: editing a shared tab once updates every product (no copies to sync).

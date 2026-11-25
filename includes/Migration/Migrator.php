@@ -268,8 +268,8 @@ final class Migrator {
 		if ( '' !== $title ) {
 			echo '<h2 class="yikes-custom-woo-tab-title">' . esc_html( $title ) . '</h2>';
 		}
-		// Content written by shop staff in YIKES; rendered like our own tab content.
-		echo Content::render( (string) ( $tab['content'] ?? '' ), array( 'ref' => 'x:' . $key ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$html = Content::render( (string) ( $tab['content'] ?? '' ), array( 'ref' => 'x:' . $key ) );
+		echo wp_kses( $html, Content::allowed_html() );
 	}
 
 	/**

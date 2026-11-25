@@ -53,6 +53,58 @@ final class Content {
 	}
 
 	/**
+	 * HTML allowed in rendered tab content: everything allowed in post content,
+	 * plus the embed elements that WordPress itself outputs (iframe, video, audio).
+	 *
+	 * @return array
+	 */
+	public static function allowed_html(): array {
+		$allowed           = wp_kses_allowed_html( 'post' );
+		$media             = array(
+			'src'      => true,
+			'width'    => true,
+			'height'   => true,
+			'class'    => true,
+			'style'    => true,
+			'title'    => true,
+			'loading'  => true,
+			'controls' => true,
+			'preload'  => true,
+			'poster'   => true,
+			'loop'     => true,
+			'muted'    => true,
+			'autoplay' => true,
+		);
+		$allowed['iframe'] = $media + array(
+			'frameborder'     => true,
+			'allow'           => true,
+			'allowfullscreen' => true,
+			'referrerpolicy'  => true,
+			'sandbox'         => true,
+			'name'            => true,
+		);
+		$allowed['video']  = $media + array( 'playsinline' => true );
+		$allowed['audio']  = $media;
+		$allowed['source'] = array(
+			'src'  => true,
+			'type' => true,
+		);
+		$allowed['track']  = array(
+			'src'     => true,
+			'kind'    => true,
+			'srclang' => true,
+			'label'   => true,
+			'default' => true,
+		);
+		/**
+		 * Filter the HTML allowed in rendered tab content.
+		 *
+		 * @param array $allowed Allowed tags and attributes (wp_kses format).
+		 */
+		return (array) apply_filters( 'bulktab_allowed_html', $allowed );
+	}
+
+	/**
 	 * Empty = no visible text and no media/shortcode/block. Empty tabs are not shown.
 	 *
 	 * @param string $html Tab HTML.

@@ -1,12 +1,11 @@
 # Extending BulkTab
 
-BulkTab exposes a small, versioned hook API. The Pro add-on uses only these hooks;
-third-party code can use them too. All hooks are prefixed `bulktab_`.
+BulkTab exposes a small, versioned hook API for add-ons and custom code. All hooks are prefixed `bulktab_`.
 
 Compatibility rules:
 
 - Hook names and argument lists are stable within a major version. New arguments are only ever appended.
-- Rules arrays use **schema v1** (see `includes/Rules.php`). Always run your data through `\BulkTab\Rules::parse()`; never assume a shape you didn't validate.
+- A shared tab's rule uses **schema v2** (see `includes/Rules.php`): all products, or any of the chosen terms of one taxonomy. Always run your data through `\BulkTab\Rules::parse()`; never assume a shape you didn't validate.
 - Tab refs: built-ins `description`, `additional_information`, `reviews`; shared tabs `s:<key>`; per-product tabs `c:<n>` (n = 1..20); other plugins' tabs `x:<key>`.
 - Front-end tab keys: `bulktab_s_<key>` (shared) and `bulktab_c_<n>` (per-product).
 
@@ -37,23 +36,6 @@ Fires at the end of `BulkTab\Plugin::boot()` (on `plugins_loaded`, priority 20),
 add_action( 'bulktab_loaded', function ( string $version ) {
 	require __DIR__ . '/includes/integration.php';
 } );
-```
-
-### `bulktab_rules_editor`
-
-```php
-do_action( 'bulktab_rules_editor', array $rules, WP_Post $post );
-```
-
-Replaces the "Show this tab on" box on the shared-tab edit screen. If **any** callback is attached, the free rules form is not printed. The free nonce field is still printed first, so the free save handler runs; pair this with `bulktab_rules_from_request` to supply the rules. `$rules` is the parsed v1 array stored on the tab.
-
-```php
-add_action( 'bulktab_rules_editor', function ( array $rules, WP_Post $post ) {
-	printf(
-		'<textarea name="my_rules_json" class="widefat" rows="6">%s</textarea>',
-		esc_textarea( wp_json_encode( $rules ) )
-	);
-}, 10, 2 );
 ```
 
 ### `bulktab_product_tabs_saved`
@@ -96,49 +78,27 @@ add_action( 'bulktab_product_panel_after', function ( int $product_id ) {
 
 ## Filters
 
-### `bulktab_rule_limits`
+### `bulktab_shared_tab_shows`
 
 ```php
-apply_filters( 'bulktab_rule_limits', array $limits ): array;
+apply_filters( 'bulktab_shared_tab_shows', ?bool $shows, string $key, array $entry, array $ctx, bool $attached ): ?bool;
 ```
 
-Limits applied when **saving** rules from the editor. Stored rules are always evaluated in full, whatever the limits, so a lapsed add-on never changes what shoppers see. Defaults (`Rules::free_limits()`):
-
-| Key | Free default | Meaning |
-|---|---|---|
-| `groups` | `1` | Max OR-groups |
-| `conditions` | `1` | Max AND-conditions per group |
-| `not` | `false` | Negated conditions allowed |
-| `include_exclude` | `false` | Product include/exclude lists allowed |
-| `taxonomies` | `product_cat`, `product_tag`, `product_brand` | Allowed taxonomies |
+Decide whether a shared tab shows on a product. Return `true` or `false` to decide, or `null` (the default) to keep BulkTab's own decision: attached on the product, or matched by the tab's rule. Hiding a tab on a product always wins and is applied before this filter. `$entry` is the index entry (`post_id`, `priority`, `rules`); `$ctx` is `array( 'id' => int, 'terms' => array( taxonomy => term IDs incl. ancestors ) )`.
 
 ```php
-add_filter( 'bulktab_rule_limits', function ( array $limits ) {
-	$limits['groups']     = 5;
-	$limits['conditions'] = 3;
-	$limits['not']        = true;
-	return $limits;
-} );
+add_filter( 'bulktab_shared_tab_shows', function ( $shows, $key, $entry, $ctx ) {
+	return 'clearance-note' === $key ? in_array( 42, $ctx['terms']['product_tag'] ?? array(), true ) : $shows;
+}, 10, 4 );
 ```
 
-### `bulktab_rules_from_request`
+### `bulktab_allowed_html`
 
 ```php
-apply_filters( 'bulktab_rules_from_request', ?array $raw_rules, int $post_id ): ?array;
+apply_filters( 'bulktab_allowed_html', array $allowed ): array;
 ```
 
-Runs when a shared tab is saved, after the nonce and `edit_post` checks. Return `null` to let the free form be parsed, or a v1-shaped array to use instead. The result still goes through `Rules::parse()` and `bulktab_rule_limits`; if either fails, the previous rules are kept and a notice is shown. Read `$_POST` with `wp_unslash()` and sanitize.
-
-```php
-add_filter( 'bulktab_rules_from_request', function ( $raw, int $post_id ) {
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- BulkTab verified its nonce.
-	if ( ! isset( $_POST['my_rules_json'] ) ) {
-		return $raw;
-	}
-	$decoded = json_decode( sanitize_textarea_field( wp_unslash( $_POST['my_rules_json'] ) ), true );
-	return is_array( $decoded ) ? $decoded : $raw;
-}, 10, 2 );
-```
+HTML allowed when tab content is output (wp_kses format). Defaults to post content plus iframe, video, audio, source and track.
 
 ### `bulktab_product_tabs`
 

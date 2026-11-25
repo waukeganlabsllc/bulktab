@@ -1,6 +1,6 @@
 <?php
 /**
- * Bootstrap: wires every component. Pro hooks in through the public
+ * Bootstrap: wires every component. Add-ons hook in through the public
  * filters/actions documented in docs/extending.md.
  *
  * @package BulkTab
@@ -67,7 +67,7 @@ final class Plugin {
 		}
 
 		/**
-		 * Fires after BulkTab is loaded. Pro and integrations attach here.
+		 * Fires after BulkTab is loaded. Add-ons and integrations attach here.
 		 *
 		 * @param string $version Free plugin version.
 		 */

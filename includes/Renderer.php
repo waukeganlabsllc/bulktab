@@ -69,7 +69,7 @@ final class Renderer {
 		$hidden   = $this->store->get_list( $product_id, '_bulktab_hide' );
 		$index    = RulesIndex::get();
 
-		foreach ( TabMatcher::resolve( $index, ProductContext::for_product( $product_id ), $attached, $hidden ) as $key ) {
+		foreach ( TabMatcher::resolve( $index, ProductContext::for_product( $product_id ), $attached, $hidden, RulesIndex::decider() ) as $key ) {
 			$post_id = I18n::current_post_id( (int) $index[ $key ]['post_id'], PostType::NAME );
 			$post    = get_post( $post_id );
 			if ( ! $post || 'publish' !== $post->post_status || Content::is_empty( (string) $post->post_content ) ) {
@@ -150,8 +150,7 @@ final class Renderer {
 				'product_id' => (int) ( $tab['bulktab_product'] ?? 0 ),
 			)
 		);
-		// Stored via kses (or by users with unfiltered_html) and rendered like post content.
-		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses( $html, Content::allowed_html() );
 	}
 
 	/**

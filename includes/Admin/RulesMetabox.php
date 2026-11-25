@@ -1,8 +1,6 @@
 <?php
 /**
- * "Show this tab on" box for the shared-tab edit screen (Free UI).
- * Pro replaces the editor via the `bulktab_rules_editor` action and raises
- * limits via `bulktab_rule_limits`; storage and evaluation are shared.
+ * "Show this tab on" box for the shared-tab edit screen.
  *
  * @package BulkTab
  */
@@ -30,20 +28,6 @@ final class RulesMetabox {
 	}
 
 	/**
-	 * Rule limits in force (Free limits unless Pro raises them).
-	 *
-	 * @return array
-	 */
-	public static function limits(): array {
-		/**
-		 * Rule limits for saving from the editor. Pro raises these.
-		 *
-		 * @param array $limits See Rules::free_limits().
-		 */
-		return (array) apply_filters( 'bulktab_rule_limits', Rules::free_limits() );
-	}
-
-	/**
 	 * Add the meta box.
 	 */
 	public static function add(): void {
@@ -60,28 +44,10 @@ final class RulesMetabox {
 		$rules = Rules::parse( get_post_meta( $post->ID, '_bulktab_rules', true ) );
 		$key   = (string) get_post_meta( $post->ID, '_bulktab_key', true );
 
-		if ( has_action( 'bulktab_rules_editor' ) ) {
-			/**
-			 * Replace the rules editor (Pro).
-			 *
-			 * @param array    $rules Parsed rules.
-			 * @param \WP_Post $post  Shared tab.
-			 */
-			do_action( 'bulktab_rules_editor', $rules, $post );
-			return;
-		}
-
-		if ( Rules::check_limits( $rules, self::limits() ) ) {
-			// Saved with Pro, Pro now inactive: keep and keep applying, but don't let the Free form overwrite it.
-			echo '<p>' . esc_html__( 'These rules were made with Pro. They still apply to your store. Re-activate Pro to edit them.', 'bulktab' ) . '</p>';
-			echo '<input type="hidden" name="bulktab_rules_keep" value="1" />';
-			return;
-		}
-
-		$mode  = $rules['all'] ? 'all' : ( $rules['groups'] ? 'terms' : 'manual' );
-		$cond  = $rules['groups'][0][0] ?? array(
-			'tax'   => 'product_cat',
-			'terms' => array(),
+		$mode  = $rules['all'] ? 'all' : ( $rules['terms'] ? 'terms' : 'manual' );
+		$cond  = array(
+			'tax'   => '' !== $rules['tax'] ? $rules['tax'] : 'product_cat',
+			'terms' => $rules['terms'],
 		);
 		$taxes = array_filter( Rules::TAXONOMIES, 'taxonomy_exists' );
 		?>
@@ -133,47 +99,26 @@ final class RulesMetabox {
 		if ( ! isset( $_POST[ self::NONCE ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ self::NONCE ] ) ), self::NONCE ) ) {
 			return;
 		}
-		if ( wp_is_post_revision( $post_id ) || ! current_user_can( 'edit_post', $post_id ) || ! empty( $_POST['bulktab_rules_keep'] ) ) {
+		if ( wp_is_post_revision( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
 
-		/**
-		 * Build rules from the submitted form. Pro's editor returns its own array here.
-		 *
-		 * @param array|null $raw Raw rules (v1 shape) or null to use the Free form.
-		 */
-		$raw = apply_filters( 'bulktab_rules_from_request', null, $post_id );
-		if ( null === $raw ) {
-			$raw  = Rules::empty_rules();
-			$mode = isset( $_POST['bulktab_mode'] ) ? sanitize_key( wp_unslash( $_POST['bulktab_mode'] ) ) : 'manual';
-			$tax  = isset( $_POST['bulktab_tax'] ) ? sanitize_key( wp_unslash( $_POST['bulktab_tax'] ) ) : '';
-			if ( 'all' === $mode ) {
-				$raw['all'] = true;
-			} elseif ( 'terms' === $mode ) {
-				$terms = isset( $_POST['bulktab_terms'][ $tax ] ) ? array_map( 'absint', (array) wp_unslash( $_POST['bulktab_terms'][ $tax ] ) ) : array();
-				if ( $terms ) {
-					$raw['groups'] = array(
-						array(
-							array(
-								'tax'   => $tax,
-								'terms' => $terms,
-								'not'   => false,
-							),
-						),
-					);
-				} else {
-					Notices::add( __( 'Pick at least one term, or choose another option. The previous rule was kept.', 'bulktab' ), 'warning' );
-					return;
-				}
+		$raw  = Rules::empty_rules();
+		$mode = isset( $_POST['bulktab_mode'] ) ? sanitize_key( wp_unslash( $_POST['bulktab_mode'] ) ) : 'manual';
+		$tax  = isset( $_POST['bulktab_tax'] ) ? sanitize_key( wp_unslash( $_POST['bulktab_tax'] ) ) : '';
+		if ( 'all' === $mode ) {
+			$raw['all'] = true;
+		} elseif ( 'terms' === $mode ) {
+			$terms = isset( $_POST['bulktab_terms'][ $tax ] ) ? array_map( 'absint', (array) wp_unslash( $_POST['bulktab_terms'][ $tax ] ) ) : array();
+			if ( ! $terms ) {
+				Notices::add( __( 'Pick at least one term, or choose another option. The previous rule was kept.', 'bulktab' ), 'warning' );
+				return;
 			}
+			$raw = Rules::for_terms( $tax, $terms );
 		}
 
 		$errors = array();
 		$rules  = Rules::parse( $raw, $errors );
-		// Validity only (no feature limits): any rule the engine can evaluate may be saved.
-		if ( $rules['all'] && $rules['groups'] ) {
-			$errors[] = 'all_with_groups';
-		}
 		if ( $errors ) {
 			Notices::add(
 				/* translators: %s: error codes */

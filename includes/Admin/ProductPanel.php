@@ -167,7 +167,7 @@ final class ProductPanel {
 						$title   = $post_id ? get_the_title( $post_id ) : '';
 						$title   = '' !== $title ? $title : $key;
 						$link    = $post_id ? get_edit_post_link( $post_id ) : '';
-						$by_rule = isset( $entry['rules'] ) && is_array( $entry['rules'] ) && TabMatcher::matches( $entry['rules'], $ctx );
+						$by_rule = TabMatcher::shows( $key, is_array( $entry ) ? $entry : array(), $ctx, false, RulesIndex::decider() );
 						$field   = 'bulktab_shared_' . sanitize_html_class( $key );
 						?>
 						<tr>
@@ -424,7 +424,7 @@ final class ProductPanel {
 			);
 		}
 
-		foreach ( TabMatcher::resolve( $index, $ctx, $attached, array() ) as $key ) {
+		foreach ( TabMatcher::resolve( $index, $ctx, $attached, array(), RulesIndex::decider() ) as $key ) {
 			$ref     = 's:' . $key;
 			$post_id = (int) ( $index[ $key ]['post_id'] ?? 0 );
 			$title   = $post_id ? get_the_title( $post_id ) : '';

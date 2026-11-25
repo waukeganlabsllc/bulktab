@@ -74,6 +74,33 @@ final class RulesIndex {
 	}
 
 	/**
+	 * Callback for TabMatcher that lets other plugins decide whether a shared
+	 * tab shows on a product, or null when nothing is hooked.
+	 *
+	 * @return callable|null
+	 */
+	public static function decider(): ?callable {
+		if ( ! has_filter( 'bulktab_shared_tab_shows' ) ) {
+			return null;
+		}
+		return static function ( string $key, array $entry, array $ctx, bool $attached ) {
+			/**
+			 * Decide whether a shared tab shows on a product.
+			 *
+			 * Return true or false to decide, or null to keep BulkTab's own decision
+			 * (attached on the product, or matched by the tab's rule).
+			 *
+			 * @param bool|null $shows    Decision, null by default.
+			 * @param string    $key      Shared-tab key.
+			 * @param array     $entry    Index entry: post_id, priority, rules.
+			 * @param array     $ctx      Product context: id and term IDs per taxonomy.
+			 * @param bool      $attached Whether the tab is attached on this product.
+			 */
+			return apply_filters( 'bulktab_shared_tab_shows', null, $key, $entry, $ctx, $attached );
+		};
+	}
+
+	/**
 	 * The index (built on first use).
 	 *
 	 * @return array<string, array{post_id: int, priority: int, rules: array}>

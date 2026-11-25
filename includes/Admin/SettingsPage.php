@@ -244,7 +244,7 @@ final class SettingsPage {
 			<?php
 			/**
 			 * Fires at the end of the Tab settings screen, outside the settings form.
-			 * Other components (import, Pro) print their own sections and forms here.
+			 * Other components and add-ons print their own sections and forms here.
 			 */
 			do_action( 'bulktab_settings_page_after' );
 			?>
